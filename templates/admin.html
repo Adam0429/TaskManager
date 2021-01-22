@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+  <style type="text/css">
+    table {
+    border-top: 1px solid #999;
+    border-left: 1px solid #999;
+    }
+    caption {
+    font-family: Arial, sans-serif;
+    color: #993333;
+    padding-bottom: 6px;
+    }
+    th, td {
+    padding: 10px;
+    border-right: 1px solid #999;
+    border-bottom: 1px solid #999;
+    }
+    th {
+    font-family: Verdana, sans-serif;
+    background: #ccc;
+    }
+    }
+    </style>
+    <title>卫星平台下载次数统计</title>
+</head>
+<body>
+    <div align="center">==========={{ date }} 本周卫星产品下载统计===========</div>
+
+<table border="1" align="center">
+  <tr>
+    <th></th>
+      {% for user in download_dict.keys() %}
+    <th>{{ user }}</th>
+      {% endfor %}
+  </tr>
+
+    {% for key in product_dict.keys() %}
+  <tr>
+
+    <td>{{ product_dict[key] }}</td>
+    {% for user in download_dict.keys() %}
+      <td> {{ download_dict[user][product_dict[key]] }} </td>
+      {% endfor %}
+    {% endfor %}
+
+  </tr>
+
+</table>
+
+
+</body>
+</html>
