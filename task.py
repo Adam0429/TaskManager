@@ -19,13 +19,16 @@ def _async_raise(tid, exctype):
 
 class Task(threading.Thread):
 	def __init__(self,*args, **kwargs):
-		super(Task, self).__init__(*args, **kwargs)
+		self.args = args
+		self.kwargs = kwargs
+		super(Task, self).__init__(*self.args, **self.kwargs)
 
 	def start(self):
 		if self.isAlive():
-			print('任务已经在执行!')
+			print(self.name,'任务已经在执行!')
 		else:
-			print('开始执行',self.name)
+			self.__init__(*self.args, **self.kwargs)
+			print(self.name,'开始执行!',self.name)
 			super().start()
 			# self.status = 'running'
 
@@ -49,8 +52,13 @@ class Task(threading.Thread):
 
 	def stop(self):
 		"""raises SystemExit in the context of the given thread, which should
-        cause the thread to exit silently (unless caught)"""
-		self.raise_exc(SystemExit)
+		cause the thread to exit silently (unless caught)"""
+		if self._is_stopped:
+			print(self.name, '任务已经停止!')
+		else:
+			print(self.name,'任务停止!')
+			self.raise_exc(SystemExit)
+			self._is_stopped = True
 
 	@property
 	def status(self):
@@ -59,9 +67,17 @@ class Task(threading.Thread):
 		else:
 			return 'stopped'
 
-
-
-
-
-
+# def fun1():
+#     for i in range(10):
+#         print(i)
+#         time.sleep(1)
+#
+# t1 = Task(name='t1', target=fun1)
+# # t1.stop()
+# # time.sleep(2)
+# t1.start()
+# time.sleep(1)
+# t1.stop()
+# time.sleep(1)
+# t1.start()
 

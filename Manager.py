@@ -20,13 +20,6 @@ class Manager():
         else:
             raise Exception('不允许添加相同名字的任务！')
 
-    def run_task_by_name(self,name):
-        for task in self.tasks:
-            if task.name == name:
-                if task.status != 'running':
-                    task.start()
-                    break
-
     def run_tasks(self):
         for task in self.tasks:
             if task.status != 'running':
@@ -35,8 +28,8 @@ class Manager():
     def run_task_by_name(self,name):
         for task in self.tasks:
             if task.name == name:
-                if task.status != 'stopped':
-                    task.stop()
+                if task.status != 'running':
+                    task.start()
                     break
 
     def stop_tasks(self):
@@ -44,6 +37,13 @@ class Manager():
             if task.status != 'stopped':
                 task.stop()
 
+    def stop_task_by_name(self,name):
+        for task in self.tasks:
+            if task.name == name:
+                if task.status != 'stopped':
+                    task.stop()
+                    break
+    
     def task_status(self):
         status = {}
         for task in self.tasks:
@@ -77,6 +77,18 @@ def runtask_by_name(name):
     manager.run_task_by_name(name)
     return 'success'
 
+@app.route("/stoptasks")
+def stoptasks():
+    manager.stop_tasks()
+    return 'success'
+
+@app.route("/stoptask_by_name/<name>")
+def stoptask_by_name(name):
+    manager.stop_task_by_name(name)
+    return 'success'
+
 if __name__ == '__main__':
     manager = Manager()
+
+    # manager.run_tasks()
     app.run(debug=True)
