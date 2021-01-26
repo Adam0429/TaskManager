@@ -16,8 +16,6 @@ from scheduler_app.controller import scheduler_app
 from version import VERSION
 from flask_basicauth import BasicAuth
 
-from task import Task
-from manager import Manager
 # 把当前目录加入执行路径，不然找不到用户自定义config.py文件
 sys.path.insert(0, os.getcwd())
 

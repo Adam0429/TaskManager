@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="addtask" method="post" >
+        <input type="text" name="taskname">
+        <br/>
+        <div align="center"><br/>
+            <input type="submit" value="addtask">
+        </div>
+    </form><br>
+<!--    <a href="addtask/t1">addtask</a>-->
+    <a href="runtasks">runtasks</a><br>
+    <a href="stoptasks">stoptasks</a><br>
+    <a href="restarttasks">restart_tasks</a><br>
+    <a href="taskstatus">taskstatuts</a><br>
+
+    {{ taskstatus }}
+</body>
+</html>
