@@ -1,3 +1,5 @@
-def fun1():
+import time
+def run():
     for i in range(100):
-    	print(i)
+        time.sleep(1)
+        print(i+100)

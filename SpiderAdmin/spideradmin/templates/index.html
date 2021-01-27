@@ -5,13 +5,17 @@
     <title>Title</title>
 </head>
 <body>
-    <form action="addtask" method="post" >
-        <input type="text" name="taskname">
-        <br/>
-        <div align="center"><br/>
-            <input type="submit" value="addtask">
-        </div>
-    </form><br>
+<!--    <form action="addtask" method="post" >-->
+<!--        <input type="text" name="taskpath">-->
+<!--        <br/>-->
+<!--        <div align="center"><br/>-->
+<!--            <input type="submit" value="addtask">-->
+<!--        </div>-->
+<!--    </form><br>-->
+    <form action="addtask" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".py" />
+        <input type="submit" />
+    </form>
 <!--    <a href="addtask/t1">addtask</a>-->
     <a href="runtasks">runtasks</a><br>
     <a href="stoptasks">stoptasks</a><br>

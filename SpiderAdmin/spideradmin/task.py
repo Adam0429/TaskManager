@@ -8,12 +8,16 @@ class Task(threading.Thread):
 	def __init__(self,*args, **kwargs):
 		self.args = args
 		if 'file' in kwargs:
-			exec(f"from task_code import {(kwargs['file'].replace('.py', ''))}")
-			print(f"from task_code import {(kwargs['file'].replace('.py', ''))}")
-			kwargs['target'] = eval(f"{kwargs['file'].replace('.py', '')}.{kwargs['target']}")
+			# print(f"from {(kwargs['file'].replace('.py', '')).replace('/', '.')} import *")
+			exec(f"from {(kwargs['file'].replace('.py', '')).replace('/','.')} import *")
+			if 'target' not in kwargs:
+				kwargs['target'] = eval(f"run")
+			else:
+				kwargs['target'] = eval(f"{kwargs['file'].replace('.py', '')}.{kwargs['target']}")
 			del kwargs['file']
-		print(kwargs)
 		self.kwargs = kwargs
+		self.error = ''
+		self.log = ''
 		super(Task, self).__init__(*self.args, **self.kwargs)
 
 	def start(self):
@@ -91,10 +95,11 @@ class Task(threading.Thread):
 #         print(i+100)
 #         time.sleep(1)
 
-t1 = Task(name='t1', target='fun1', file = 'f2.py')
-# t2 = Task(name='t2', target=fun2)
-
-t1.start()
+# t1 = Task(name='t1', target='fun1', file = 'f2.py')
+# t2 = Task(name='t2', target='fun1', file = 'f1.py')
+#
+# t1.start()
+# t2.start()
 # time.sleep(2)
 #
 # t1.restart()
