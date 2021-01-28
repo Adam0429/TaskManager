@@ -1,5 +1,5 @@
 import time
 def run():
-    for i in range(100):
+    for i in range(10):
         time.sleep(1)
-        print(i+100)
+        print('f2',i)

@@ -21,8 +21,8 @@ class Manager():
 
     def run_tasks(self):
         for task in self.tasks:
-            if task.status != 'running':
-                task.start()
+            # if task.status != 'running':
+            task.start()
 
     def run_task_by_name(self,name):
         for task in self.tasks:
@@ -33,17 +33,15 @@ class Manager():
 
     def stop_tasks(self):
         for task in self.tasks:
-            if task.status != 'stopped':
-                task.stop()
-        time.sleep(1)
+            # if task.status != 'stopped':
+            task.stop()
 
     def stop_task_by_name(self,name):
         for task in self.tasks:
             if task.name == name:
-                if task.status != 'stopped':
-                    task.stop()
-                    break
-        time.sleep(1)
+                # if task.status != 'stopped':
+                task.stop()
+                break
 
     def restart_tasks(self):
         for task in self.tasks:
@@ -58,7 +56,7 @@ class Manager():
     def task_status(self):
         status = {}
         for task in self.tasks:
-            status[task.name] = task.status
+            status[task.name] = {'status':task.status,'success':task.success,'exception':task.exception,'exc_traceback':task.exc_traceback}
         return status
 
     def load_tasks(self):

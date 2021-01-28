@@ -2,11 +2,13 @@ import threading
 import time
 import inspect
 import ctypes
-
+import traceback
+import sys
 
 class Task(threading.Thread):
 	def __init__(self,*args, **kwargs):
 		self.args = args
+		kwargs['name'] = kwargs['name'].split('/')[kwargs['name'].count('/')].replace('.py','')
 		if 'file' in kwargs:
 			# print(f"from {(kwargs['file'].replace('.py', '')).replace('/', '.')} import *")
 			exec(f"from {(kwargs['file'].replace('.py', '')).replace('/','.')} import *")
@@ -16,9 +18,20 @@ class Task(threading.Thread):
 				kwargs['target'] = eval(f"{kwargs['file'].replace('.py', '')}.{kwargs['target']}")
 			del kwargs['file']
 		self.kwargs = kwargs
-		self.error = ''
-		self.log = ''
+		self.success = None
+		self.exception = None
+		self.exc_traceback = ''
+		# self.log = ''
 		super(Task, self).__init__(*self.args, **self.kwargs)
+
+	def run(self):
+		try:
+			super().run()
+			self.success = True
+		except Exception as e:
+			self.exception = e
+			self.success = False
+			self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
 
 	def start(self):
 		if self.isAlive():

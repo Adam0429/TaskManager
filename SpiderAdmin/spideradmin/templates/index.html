@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script language="JavaScript">
+        function Refresh()
+        {
+            window.location.reload();
+        }
+        setTimeout('Refresh()',1000); //1秒刷新一次
+    </script>
 </head>
 <body>
-<!--    <form action="addtask" method="post" >-->
-<!--        <input type="text" name="taskpath">-->
-<!--        <br/>-->
-<!--        <div align="center"><br/>-->
-<!--            <input type="submit" value="addtask">-->
-<!--        </div>-->
-<!--    </form><br>-->
     <form action="addtask" method="POST" enctype="multipart/form-data">
         <input type="file" name="file" accept=".py" />
         <input type="submit" />
@@ -20,8 +20,9 @@
     <a href="runtasks">runtasks</a><br>
     <a href="stoptasks">stoptasks</a><br>
     <a href="restarttasks">restart_tasks</a><br>
-    <a href="taskstatus">taskstatuts</a><br>
 
-    {{ taskstatus }}
+    {% for task in taskstatus.keys(): %}
+        {{ task }}:     {{ taskstatus[task] }} <a href="runtask_by_name/{{ task }}">runtask</a>    <a href="stoptask_by_name/{{ task }}">stoptask</a>    <a href="restarttask_by_name/{{ task }}">restart_task</a>  <br>
+    {% endfor %}
 </body>
 </html>
