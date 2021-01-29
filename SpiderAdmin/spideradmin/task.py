@@ -4,10 +4,11 @@ import inspect
 import ctypes
 import traceback
 import sys
+import inspect
+
 
 class Task(threading.Thread):
 	def __init__(self,*args, **kwargs):
-		self.args = args
 		kwargs['name'] = kwargs['name'].split('/')[kwargs['name'].count('/')].replace('.py','')
 		if 'file' in kwargs:
 			# print(f"from {(kwargs['file'].replace('.py', '')).replace('/', '.')} import *")
@@ -17,10 +18,17 @@ class Task(threading.Thread):
 			else:
 				kwargs['target'] = eval(f"{kwargs['file'].replace('.py', '')}.{kwargs['target']}")
 			del kwargs['file']
+		self.doc = kwargs['target'].__doc__
+		self.params = inspect.getargspec(kwargs['target']).args
+		# for param in self.params:
+		# 	kwargs[param] = 1
+		# 	print(param)
+		self.args = args
 		self.kwargs = kwargs
 		self.success = None
 		self.exception = None
 		self.exc_traceback = ''
+		self.start_args = ()
 		# self.log = ''
 		super(Task, self).__init__(*self.args, **self.kwargs)
 
@@ -33,19 +41,20 @@ class Task(threading.Thread):
 			self.success = False
 			self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
 
-	def start(self):
+	def start(self,args=()):
 		if self.isAlive():
 			print(self.name,'任务已经在执行!')
 		else:
 			# 一个线程只能运行一次，下一次需要初始化
+			self.kwargs['args'] = args
 			self.__init__(*self.args, **self.kwargs)
 			print(self.name,'开始执行!',self.name)
 			super().start()
 			# self.status = 'running'
 
-	def restart(self):
+	def restart(self,args=()):
 		self.stop()
-		self.start()
+		self.start(args=self.start_args)
 
 	def stop(self):
 		"""raises SystemExit in the context of the given thread, which should
@@ -98,17 +107,24 @@ class Task(threading.Thread):
 		else:
 			return 'stopped'
 
-# def fun1():
-#     for i in range(3):
-#         print(i)
+	@property
+	def info(self):
+		return {'status':self.status,'success':self.success,'doc':self.doc,'exception':self.exception,'exc_traceback':self.exc_traceback}
+
+# import time
+# def fun1(a):
+#     for i in range(10):
+#         """这里是f2函数"""
 #         time.sleep(1)
+#         print('f2',i)
+
 #
 # def fun2():
 #     for i in range(10):
 #         print(i+100)
 #         time.sleep(1)
 
-# t1 = Task(name='t1', target='fun1', file = 'f2.py')
+# t1 = Task(name='t1', target=fun1,args=(1,))
 # t2 = Task(name='t2', target='fun1', file = 'f1.py')
 #
 # t1.start()

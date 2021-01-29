@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script language="JavaScript">
-        function Refresh()
-        {
-            window.location.reload();
-        }
-        setTimeout('Refresh()',1000); //1秒刷新一次
+<!--        function Refresh()-->
+<!--        {-->
+<!--            window.location.reload();-->
+<!--        }-->
+<!--        setTimeout('Refresh()',1000); //1秒刷新一次-->
     </script>
 </head>
 <body>
@@ -21,8 +21,18 @@
     <a href="stoptasks">stoptasks</a><br>
     <a href="restarttasks">restart_tasks</a><br>
 
-    {% for task in taskstatus.keys(): %}
-        {{ task }}:     {{ taskstatus[task] }} <a href="runtask_by_name/{{ task }}">runtask</a>    <a href="stoptask_by_name/{{ task }}">stoptask</a>    <a href="restarttask_by_name/{{ task }}">restart_task</a>  <br>
+    {% for task in tasks: %}
+        {{ task.name }}:     {{ task.info }}<br>
+        <form action="runtask_by_name" method="POST">
+        <input type="hidden" name="task_name" value="{{ task.name }}"/>
+        {% for param in task.params %}
+            {{ param }}:
+        <input type="text" name={{ param }}/>
+            {% endfor %}
+        <input type="submit" value="runtask">
+        </form>
+        <a href="stoptask_by_name/{{ task.name }}">stoptask</a>
+        <a href="restarttask_by_name/{{ task.name }}">restart_task</a>  <br>
     {% endfor %}
 </body>
 </html>

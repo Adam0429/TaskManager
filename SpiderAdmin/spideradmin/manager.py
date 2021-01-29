@@ -19,16 +19,16 @@ class Manager():
         else:
             raise Exception('不允许添加相同名字的任务！')
 
-    def run_tasks(self):
+    def run_tasks(self,args=()):
         for task in self.tasks:
             # if task.status != 'running':
-            task.start()
+            task.start(args=args)
 
-    def run_task_by_name(self,name):
+    def run_task_by_name(self,name,args=()):
         for task in self.tasks:
             if task.name == name:
                 # if task.status != 'running':
-                task.start()
+                task.start(args=args)
                 break
 
     def stop_tasks(self):
@@ -52,12 +52,6 @@ class Manager():
             if task.name == name:
                 task.restart()
                 break
-    
-    def task_status(self):
-        status = {}
-        for task in self.tasks:
-            status[task.name] = {'status':task.status,'success':task.success,'exception':task.exception,'exc_traceback':task.exc_traceback}
-        return status
 
     def load_tasks(self):
         task_files = glob(os.path.join(app.config['task_path'],'*.py'))
@@ -67,18 +61,19 @@ class Manager():
 
 @app.route("/")
 def index():
-    return render_template("index.html",taskstatus=manager.task_status())
+    return render_template("index.html",tasks=manager.tasks)
 
-@app.route("/taskstatus")
-def status():
-    return manager.task_status()
+@app.route("/tasks")
+def tasks():
+    return manager.tasks()
 
 @app.route("/addtask",methods=['POST'])
 def addtask():
     if request.method == 'POST':
         f = request.files['file']
         f.save(os.path.join(app.config['task_path'], secure_filename(f.filename)))
-        task = Task(name=os.path.join(app.config['task_path'], secure_filename(f.filename)), file=os.path.join(app.config['task_path'], secure_filename(f.filename)))
+        task = Task(name=os.path.join(app.config['task_path'], secure_filename(f.filename)),
+                    file=os.path.join(app.config['task_path'], secure_filename(f.filename)))
         manager.add_task(task)
         return redirect("/")
 
@@ -89,14 +84,19 @@ def addtask():
 #     manager.add_task(task)
 #     return render_template("index.html",taskstatus=manager.task_status())
 
-@app.route("/runtasks")
+@app.route("/runtasks",methods=['POST'])
 def run_tasks():
     manager.run_tasks()
     return redirect("/")
 
-@app.route("/runtask_by_name/<name>")
-def run_task_by_name(name):
-    manager.run_task_by_name(name)
+@app.route("/runtask_by_name",methods=['POST'])
+def run_task_by_name():
+    args = []
+    for key in request.form.keys():
+        if key != 'task_name':
+            args.append(request.form.get(key))
+    print(request.form.get('task_name'))
+    manager.run_task_by_name(name=request.form.get('task_name'),args=tuple(args))
     return redirect("/")
 
 @app.route("/stoptasks")
