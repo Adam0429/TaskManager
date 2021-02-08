@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.config['task_path'] = 'SpiderAdmin/spideradmin/task_code'
 
+
 class Manager():
     def __init__(self):
         self.tasks = []
@@ -71,9 +72,9 @@ def tasks():
 def addtask():
     if request.method == 'POST':
         f = request.files['file']
-        f.save(os.path.join(app.config['task_path'], secure_filename(f.filename)))
-        task = Task(name=os.path.join(app.config['task_path'], secure_filename(f.filename)),
-                    file=os.path.join(app.config['task_path'], secure_filename(f.filename)))
+        f.save(os.path.join(app.config['task_path'], f.filename))
+        task = Task(name=os.path.join(app.config['task_path'], f.filename),
+                    file=os.path.join(app.config['task_path'], f.filename))
         manager.add_task(task)
         return redirect("/")
 

@@ -6,7 +6,7 @@ import math
 from tqdm import tqdm
 def run():
 	"""这里是f2函数"""
-	for i in range(100):
+	for i in range(5):
 		print('f4',i)
 		time.sleep(1)
 # host_m1 = '10.10.8.52'
