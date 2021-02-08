@@ -144,6 +144,10 @@ class Task(threading.Thread):
 	def info(self):
 		return {'status':self.status,'success':self.success,'doc':self.doc,'exception':self.exception,'exc_traceback':self.exc_traceback}
 
+	@property
+	def all_info(self):
+		return self.__dict__
+
 	def set_loop(self,unit,interval=1,start_time=None):
 		self.unit = unit
 		self.interval = interval

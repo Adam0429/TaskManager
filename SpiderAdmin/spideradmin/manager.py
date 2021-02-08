@@ -64,6 +64,13 @@ class Manager():
 def index():
     return render_template("index.html",tasks=manager.tasks)
 
+@app.route("/taskinfo/<task_name>")
+def task_info(task_name):
+    for task in manager.tasks:
+        if task.name == task_name:
+            info = task.all_info
+    return render_template("task_info.html",task_name=task_name,info=info)
+
 @app.route("/tasks")
 def tasks():
     return manager.tasks()
