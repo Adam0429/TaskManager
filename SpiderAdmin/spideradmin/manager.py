@@ -54,6 +54,12 @@ class Manager():
                 task.restart()
                 break
 
+    def set_loop_by_name(self,name,unit,interval,start_time):
+        for task in self.tasks:
+            if task.name == name:
+                task.set_loop(unit, interval, start_time)
+                break
+
     def load_tasks(self):
         task_files = glob(os.path.join(app.config['task_path'],'*.py'))
         for file in task_files:
@@ -127,6 +133,13 @@ def restarttask_by_name(name):
     manager.restart_task_by_name(name)
     return redirect("/")
 
+@app.route("/setloop_by_name",methods=['POST'])
+def setloop():
+    if request.form.get('start_time') == '':
+        start_time = None
+    manager.set_loop_by_name(request.form.get('task_name'),request.form.get('unit'),int(request.form.get('interval')),start_time)
+
+    return redirect("/")
 
 if __name__ == '__main__':
     manager = Manager()

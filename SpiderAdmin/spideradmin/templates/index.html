@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <script src="/static/js/jquery@3.4.1.min.js"></script>
+
     <meta charset="UTF-8">
     <title>Title</title>
-    <script language="JavaScript">
+    <script type="text/javascript">
 <!--        function Refresh()-->
 <!--        {-->
 <!--            window.location.reload();-->
@@ -26,14 +29,28 @@
         <form action="runtask_by_name" method="POST">
         <input type="hidden" name="task_name" value="{{ task.name }}"/>
         {% for param in task.params %}
-            {{ param }}:
+            {{ param }}
         <input type="text" name={{ param }}/>
-            {% endfor %}
+        {% endfor %}
         <input type="submit" value="runtask">
         </form>
+
+        <form action="setloop_by_name" method="POST">
+             <input type="hidden" name="task_name" value="{{ task.name }}"/>
+            unit:<input type="text" name="unit"/>
+            interval:<input type="text" name="interval"/>
+            start_time:<input type="text" name="start_time"/>
+            <input type="submit" value="setloop" />
+        </form>
+
         <a href="stoptask_by_name/{{ task.name }}">stoptask</a>
         <a href="restarttask_by_name/{{ task.name }}">restart_task</a>
         <a href="taskinfo/{{ task.name }}">详细信息</a><br>
+    <br><br><br><br><br>
     {% endfor %}
+
+
+
+
 </body>
 </html>

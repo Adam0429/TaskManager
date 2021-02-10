@@ -9,6 +9,7 @@ import datetime
 import re
 import random
 from schedule import Job
+import _thread
 
 weekdays = (
 	'monday',
@@ -44,7 +45,7 @@ class Task(threading.Thread):
 		self.success = None
 		self.exception = None
 		self.exc_traceback = ''
-		self.if_loop = False #默认是非重复任务
+		self.if_loop = False
 		# self.log = ''
 		super(Task, self).__init__(*self.args, **self.kwargs)
 
@@ -56,11 +57,13 @@ class Task(threading.Thread):
 			# 	job.job_func = self._target
 			# 	job.unit = 'seconds'
 			# 	job.do(self._target)
+
 			if self.if_loop: #定时任务
 				while True:
 					if self.next_run == None or datetime.datetime.now() > self.next_run:
 						if self.next_run == None:
 							self.next_run = datetime.datetime.now()
+
 						self._target(*self._args, **self._kwargs)
 						self._schedule_next_run()
 						self.success = True
@@ -78,12 +81,12 @@ class Task(threading.Thread):
 		if self.isAlive():
 			print(self.name,'任务已经在执行!')
 		else:
-			# 一个线程只能运行一次，下一次需要初始化
+			# 一个线程只能运行一次，下一次需要初始化(改写了)
 			self.kwargs['args'] = args
+			# self.kwargs['if_loop'] = self.if_loop
 			self.__init__(*self.args, **self.kwargs)
 			print(self.name,'开始执行!',self.name)
 			super().start()
-			# self.status = 'running'
 
 	def restart(self,args=()):
 		self.stop()
@@ -148,7 +151,7 @@ class Task(threading.Thread):
 	def all_info(self):
 		return self.__dict__
 
-	def set_loop(self,unit,interval=1,start_time=None):
+	def set_loop(self,unit,interval,start_time=None):
 		self.unit = unit
 		self.interval = interval
 		self.if_loop = True
@@ -196,7 +199,7 @@ class Task(threading.Thread):
 				else:
 					next_run_day = weekday_dates[weekdays.index(self.unit)]
 					self.next_run = datetime.datetime(next_run_day.year, next_run_day.month, next_run_day.day, now.hour,now.minute, now.second)
-
+				self.start_time = self.next_run
 		else:#非第一次计算下次运行时间
 			if self.unit in weekdays:
 				self.period = datetime.timedelta(**{'days': 7})
