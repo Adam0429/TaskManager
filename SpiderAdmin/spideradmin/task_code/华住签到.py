@@ -57,7 +57,6 @@ def signIn():
 	  'source': 'APP',
 	  'sk': 'a4d13d109f5946e48f82699138e450a3069615093'
 	}
-	print(11)
 	response = requests.post('https://newactivity.huazhu.com/v1/pointStore/signIn', headers=headers, data=data,verify=False)
 	if response.json()['data']['success']:
 		print(f"签到成功！获得积分{str(response.json()['data']['point'])}")

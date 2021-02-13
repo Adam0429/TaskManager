@@ -86,7 +86,9 @@ class Task(threading.Thread):
 			# self.kwargs['if_loop'] = self.if_loop
 			self.__init__(*self.args, **self.kwargs)
 			print(self.name,'开始执行!',self.name)
+			self._started._flag = False
 			super().start()
+
 
 	def restart(self,args=()):
 		self.stop()
