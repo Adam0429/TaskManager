@@ -37,9 +37,21 @@
 
         <form action="setloop_by_name" method="POST">
              <input type="hidden" name="task_name" value="{{ task.name }}"/>
-            unit:<input type="text" name="unit"/>
-            interval:<input type="text" name="interval"/>
-            start_time:<input type="text" name="start_time"/>
+            unit:<select name="unit">
+                <option value="seconds">seconds</option>
+                <option value="minutes">minutes</option>
+                <option value="hours">hours</option>
+                <option value="days">days</option>
+                <option value="monday">monday</option>
+                <option value="tuesday">tuesday</option>
+                <option value="wednesday">wednesday</option>
+                <option value="thursday">thursday</option>
+                <option value="friday">friday</option>
+                <option value="saturday">saturday</option>
+                <option value="sunday">sunday</option>
+                </select>
+            interval:<input type="text" name="interval" value="1"/>
+            loop_start_time:<input type="text" name="loop_start_time" value="{{ now }}"/>
             <input type="submit" value="setloop" />
         </form>
 
@@ -50,7 +62,9 @@
     {% endfor %}
 
 
+<form>
 
+</form>
 
 </body>
 </html>

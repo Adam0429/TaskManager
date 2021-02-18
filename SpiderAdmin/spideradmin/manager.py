@@ -4,11 +4,10 @@ import os
 from glob import glob
 from flask import Flask, send_file, render_template,request,redirect
 from werkzeug.utils import secure_filename
-
+import datetime
 
 app = Flask(__name__)
-app.config['task_path'] = 'SpiderAdmin/spideradmin/task_code'
-
+app.config['task_path'] = 'task_code'
 
 class Manager():
     def __init__(self):
@@ -68,7 +67,8 @@ class Manager():
 
 @app.route("/")
 def index():
-    return render_template("index.html",tasks=manager.tasks)
+    now = datetime.datetime.now().strftime('%H:%M:%S')
+    return render_template("index.html",tasks=manager.tasks,now=now)
 
 @app.route("/taskinfo/<task_name>")
 def task_info(task_name):
@@ -135,9 +135,7 @@ def restarttask_by_name(name):
 
 @app.route("/setloop_by_name",methods=['POST'])
 def setloop():
-    if request.form.get('start_time') == '':
-        start_time = None
-    manager.set_loop_by_name(request.form.get('task_name'),request.form.get('unit'),int(request.form.get('interval')),start_time)
+    manager.set_loop_by_name(request.form.get('task_name'),request.form.get('unit'),int(request.form.get('interval')),request.form.get('loop_start_time'))
 
     return redirect("/")
 

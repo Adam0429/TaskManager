@@ -60,10 +60,7 @@ class Task(threading.Thread):
 
 			if self.if_loop: #定时任务
 				while True:
-					if self.next_run == None or datetime.datetime.now() > self.next_run:
-						if self.next_run == None:
-							self.next_run = datetime.datetime.now()
-
+					if datetime.datetime.now() > self.next_run:
 						self._target(*self._args, **self._kwargs)
 						self._schedule_next_run()
 						self.success = True
@@ -82,9 +79,9 @@ class Task(threading.Thread):
 			print(self.name,'任务已经在执行!')
 		else:
 			# 一个线程只能运行一次，下一次需要初始化(改写了)
-			self.kwargs['args'] = args
-			# self.kwargs['if_loop'] = self.if_loop
-			self.__init__(*self.args, **self.kwargs)
+			# self.kwargs['args'] = args
+			# self.__init__(*self.args, **self.kwargs)
+			self.start_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 			print(self.name,'开始执行!',self.name)
 			self._started._flag = False
 			super().start()
@@ -153,17 +150,29 @@ class Task(threading.Thread):
 	def all_info(self):
 		return self.__dict__
 
-	def set_loop(self,unit,interval,start_time=None):
+	def set_loop(self,unit,interval,loop_start_time=None):
+		'''
+		:param unit: 如果unit值为指定的星期(1-7),开始时间的日期为下一个最近的这个日子。如果unit为['seconds', 'minutes', 'hours', 'days'],则开始时间的日期为今日
+		:param interval: unit的数量，当unit值为指定的星期(1-7)时，此参数没有用
+		:param loop_time: 循环开始的时间（不包含日期）如 10:00:00
+		:return:
+		'''
 		self.unit = unit
 		self.interval = interval
 		self.if_loop = True
 		self.next_run = None
-		self.start_time = start_time
+		self.loop_start_time = loop_start_time
 		self._schedule_next_run()
 
+
 	def _schedule_next_run(self):
-		if self.unit not in ['seconds', 'minutes', 'hours', 'days', 'weeks']+list(weekdays):
+		if self.unit not in ['seconds', 'minutes', 'hours', 'days']+list(weekdays):
 			raise Exception('Invalid unit')
+
+		if self.unit in weekdays:
+			self.period = datetime.timedelta(**{'days': 7})
+		else:
+			self.period = datetime.timedelta(**{self.unit: self.interval})
 
 		if self.next_run == None: #第一次计算下次运行时间
 			now = datetime.datetime.now()
@@ -174,43 +183,41 @@ class Task(threading.Thread):
 				t = today + datetime.timedelta(idx)
 				weekday_dates[t.weekday()] = today + datetime.timedelta(idx)
 
-			if self.start_time != None:  # 指定开始时间
-				time_values = [int(v) for v in self.start_time.split(':')]
-				if len(time_values) == 3:
-					hour, minute, second = time_values
-				elif len(time_values) == 2 and self.unit == 'minutes':
-					hour, minute = time_values
-					second = 0
-				if self.unit not in weekdays:
-					self.next_run = datetime.datetime(now.year, now.month, now.day, hour, minute, second)
-				else:
-					next_run_day = weekday_dates[weekdays.index(self.unit)]
-					self.next_run = datetime.datetime(next_run_day.year, next_run_day.month, next_run_day.day, hour, minute,second)
-				if datetime.datetime.now() > self.next_run: #如果指定时间早于当前时间，需要特殊处理。将下次执行时间移到晚于当前
-					if self.unit in weekdays:
-						self.period = datetime.timedelta(**{'days': 7})
-					else:
-						self.period = datetime.timedelta(**{self.unit: self.interval})
-					if self.unit in ['seconds', 'minutes', 'hours']:
-						self.next_run = datetime.datetime.now() + self.period
-					else:  # 避免多次运行后，任务运行时间延后
-						self.next_run = self.next_run + self.period
-			else:#没有指定开始时间，则默认为现在
-				if self.unit not in weekdays:
-					self.next_run = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute, now.second)
-				else:
-					next_run_day = weekday_dates[weekdays.index(self.unit)]
-					self.next_run = datetime.datetime(next_run_day.year, next_run_day.month, next_run_day.day, now.hour,now.minute, now.second)
-				self.start_time = self.next_run
-		else:#非第一次计算下次运行时间
-			if self.unit in weekdays:
-				self.period = datetime.timedelta(**{'days': 7})
+			# if self.loop_time != None:  # 指定开始时间
+			time_values = [int(v) for v in self.loop_start_time.split(':')]
+			if len(time_values) == 3:
+				hour, minute, second = time_values
 			else:
-				self.period = datetime.timedelta(**{self.unit: self.interval})
+				raise Exception("start_time format is invalid!")
+
+			self.loop_start_time = datetime.datetime.now().strftime('%Y-%m-%d') + ' ' + self.loop_start_time
+			if self.unit not in weekdays:
+				self.next_run = datetime.datetime(now.year, now.month, now.day, hour, minute, second)
+			else:
+				next_run_day = weekday_dates[weekdays.index(self.unit)]
+				self.next_run = datetime.datetime(next_run_day.year, next_run_day.month, next_run_day.day, hour, minute,second)
+			# if datetime.datetime.now() > self.next_run: #如果指定时间早于当前时间，需要特殊处理。将下次执行时间移到晚于当前
+			# 	if self.unit in weekdays:
+			# 		self.period = datetime.timedelta(**{'days': 7})
+			# 	else:
+			# 		self.period = datetime.timedelta(**{self.unit: self.interval})
+			# 	if self.unit in ['seconds', 'minutes', 'hours']:
+			# 		self.next_run = datetime.datetime.now() + self.period
+			# 	else:  # 避免多次运行后，任务运行时间延后
+			# 		self.next_run = self.next_run + self.period
+			# else:#没有指定开始时间，则默认为现在
+			# 	if self.unit not in weekdays:
+			# 		self.next_run = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute, now.second)
+			# 	else:
+			# 		next_run_day = weekday_dates[weekdays.index(self.unit)]
+			# 		self.next_run = datetime.datetime(next_run_day.year, next_run_day.month, next_run_day.day, now.hour,now.minute, now.second)
+			# 	self.loop_time = self.next_run
+		else:#非第一次计算下次运行时间
 			if self.unit in ['seconds', 'minutes','hours']:
 				self.next_run = datetime.datetime.now() + self.period
 			else:# 避免多次运行后，任务运行时间延后
 				self.next_run = self.next_run + self.period
+		self.next_run = datetime.datetime(self.next_run.year, self.next_run.month, self.next_run.day, self.next_run.hour, self.next_run.minute, self.next_run.second)
 		print('下次运行时间:',self.next_run)
 		# if self.start_day is not None:
 		# 	if self.unit != 'weeks':
