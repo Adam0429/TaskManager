@@ -26,7 +26,7 @@ class Task(threading.Thread):
 		print(kwargs['name'])
 		kwargs['name'] = kwargs['name'].split('/')[kwargs['name'].count('/')].replace('.py','')
 		if 'file' in kwargs:
-			print(f"from {(kwargs['file'].replace('.py', '')).replace('/', '.')} import *")
+			# print(f"from {(kwargs['file'].replace('.py', '')).replace('/', '.')} import *")
 			exec(f"from {(kwargs['file'].replace('.py', '')).replace('/','.')} import *")
 			if 'target' not in kwargs:
 				kwargs['target'] = eval(f"run")
@@ -59,6 +59,7 @@ class Task(threading.Thread):
 			# 	job.do(self._target)
 
 			if self.if_loop: #定时任务
+				self._is_stopped = False
 				while True:
 					if datetime.datetime.now() > self.next_run:
 						self._target(*self._args, **self._kwargs)
@@ -66,6 +67,7 @@ class Task(threading.Thread):
 						self.success = True
 					time.sleep(1)
 			else:
+				self._is_stopped = False
 				self._target(*self._args, **self._kwargs)
 				self.success = True
 

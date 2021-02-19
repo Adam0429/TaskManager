@@ -1,4 +1,4 @@
-from SpiderAdmin.spideradmin.task import Task
+from task import Task
 import time
 import os
 from glob import glob
@@ -142,4 +142,4 @@ def setloop():
 if __name__ == '__main__':
     manager = Manager()
     manager.load_tasks()
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0')
