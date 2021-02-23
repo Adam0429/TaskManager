@@ -6,6 +6,7 @@ import traceback
 import sys
 import inspect
 import datetime
+
 import re
 import random
 from schedule import Job
@@ -23,7 +24,7 @@ weekdays = (
 
 class Task(threading.Thread):
 	def __init__(self,*args, **kwargs):
-		print(kwargs['name'])
+		# print(kwargs['name'])
 		kwargs['name'] = kwargs['name'].split('/')[kwargs['name'].count('/')].replace('.py','')
 		if 'file' in kwargs:
 			# print(f"from {(kwargs['file'].replace('.py', '')).replace('/', '.')} import *")
@@ -46,35 +47,40 @@ class Task(threading.Thread):
 		self.exception = None
 		self.exc_traceback = ''
 		self.if_loop = False
+		self.notify = None
 		# self.log = ''
 		super(Task, self).__init__(*self.args, **self.kwargs)
 
 	def run(self):
-		try:
-			# super().run()
-			# if self._target:
-			# 	job = Job(interval=1)
-			# 	job.job_func = self._target
-			# 	job.unit = 'seconds'
-			# 	job.do(self._target)
-
-			if self.if_loop: #定时任务
+		if self.if_loop:  # 定时任务
+			while True:
 				self._is_stopped = False
-				while True:
-					if datetime.datetime.now() > self.next_run:
+				if datetime.datetime.now() > self.next_run:
+					try:
 						self._target(*self._args, **self._kwargs)
-						self._schedule_next_run()
 						self.success = True
-					time.sleep(1)
-			else:
-				self._is_stopped = False
+					except Exception as e:
+						self.exception = e
+						self.success = False
+						self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
+						if self.notify != None:
+							self.notify.send(['872490934@qq.com'], 'TaskManager ' + self.name, self.exc_traceback)
+					finally:
+						self._schedule_next_run()
+						time.sleep(1)
+
+		else:
+			self._is_stopped = False
+			try:
 				self._target(*self._args, **self._kwargs)
 				self.success = True
 
-		except Exception as e:
-			self.exception = e
-			self.success = False
-			self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
+			except Exception as e:
+				self.exception = e
+				self.success = False
+				self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
+				if self.notify != None:
+					self.notify.send(['872490934@qq.com'], 'TaskManager ' + self.name, self.exc_traceback)
 
 	def start(self,args=()):
 		if self.isAlive():
@@ -84,7 +90,7 @@ class Task(threading.Thread):
 			# self.kwargs['args'] = args
 			# self.__init__(*self.args, **self.kwargs)
 			self.start_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-			print(self.name,'开始执行!',self.name)
+			print(self.name,'开始执行!')
 			self._started._flag = False
 			super().start()
 
@@ -221,63 +227,10 @@ class Task(threading.Thread):
 				self.next_run = self.next_run + self.period
 		self.next_run = datetime.datetime(self.next_run.year, self.next_run.month, self.next_run.day, self.next_run.hour, self.next_run.minute, self.next_run.second)
 		print('下次运行时间:',self.next_run)
-		# if self.start_day is not None:
-		# 	if self.unit != 'weeks':
-		# 		raise Exception('`unit` should be \'weeks\'')
-		# 	weekdays = (
-		# 		'monday',
-		# 		'tuesday',
-		# 		'wednesday',
-		# 		'thursday',
-		# 		'friday',
-		# 		'saturday',
-		# 		'sunday'
-		# 	)
-		# 	if self.start_day not in weekdays:
-		# 		raise Exception('Invalid start day')
-		# 	weekday = weekdays.index(self.start_day)
-		# 	days_ahead = weekday - self.next_run.weekday()
-		# 	if days_ahead <= 0:  # Target day already happened this week
-		# 		days_ahead += 7
-		# 	self.next_run += datetime.timedelta(days_ahead) - self.period
-		# if self.at_time is not None:
-		# 	if (self.unit not in ('days', 'hours', 'minutes')
-		# 			and self.start_day is None):
-		# 		raise Exception(('Invalid unit without'
-		# 								  ' specifying start day'))
-		# 	kwargs = {
-		# 		'second': self.at_time.second,
-		# 		'microsecond': 0
-		# 	}
-		# 	if self.unit == 'days' or self.start_day is not None:
-		# 		kwargs['hour'] = self.at_time.hour
-		# 	if self.unit in ['days', 'hours'] or self.start_day is not None:
-		# 		kwargs['minute'] = self.at_time.minute
-		# 	self.next_run = self.next_run.replace(**kwargs)
-		# 	# Make sure we run at the specified time *today* (or *this hour*)
-		# 	# as well. This accounts for when a job takes so long it finished
-		# 	# in the next period.
-		# 	if not self.last_run \
-		# 			or (self.next_run - self.last_run) > self.period:
-		# 		now = datetime.datetime.now()
-		# 		if (self.unit == 'days' and self.at_time > now.time() and
-		# 				self.interval == 1):
-		# 			self.next_run = self.next_run - datetime.timedelta(days=1)
-		# 		elif self.unit == 'hours' \
-		# 				and (
-		# 				self.at_time.minute > now.minute
-		# 				or (self.at_time.minute == now.minute
-		# 					and self.at_time.second > now.second)
-		# 		):
-		# 			self.next_run = self.next_run - datetime.timedelta(hours=1)
-		# 		elif self.unit == 'minutes' \
-		# 				and self.at_time.second > now.second:
-		# 			self.next_run = self.next_run - \
-		# 							datetime.timedelta(minutes=1)
-		# if self.start_day is not None and self.at_time is not None:
-		# 	# Let's see if we will still make that time we specified today
-		# 	if (self.next_run - datetime.datetime.now()).days >= 7:
-		# 		self.next_run -= self.period
+
+	def set_notify(self,notify):
+		self.notify = notify
+
 # import time
 # def fun1(a):
 #     for i in range(10):

@@ -5,13 +5,17 @@ from glob import glob
 from flask import Flask, send_file, render_template,request,redirect
 from werkzeug.utils import secure_filename
 import datetime
+from email_sender import Email_sender
+import paho.mqtt.client as mqtt
 
 app = Flask(__name__)
 app.config['task_path'] = 'task_code'
 
 class Manager():
-    def __init__(self):
+    def __init__(self,notify=None):
         self.tasks = []
+        if notify != None:
+            self.notify = notify
 
     def add_task(self,task):
         if task.name not in [task.name for task in self.tasks]:
@@ -63,7 +67,9 @@ class Manager():
         task_files = glob(os.path.join(app.config['task_path'],'*.py'))
         for file in task_files:
             if '__init__' not in file:
-                self.add_task(Task(name=file, file = file))
+                t = Task(name=file, file=file)
+                t.set_notify(self.notify)
+                self.add_task(t)
 
 @app.route("/")
 def index():
@@ -139,7 +145,46 @@ def setloop():
 
     return redirect("/")
 
+
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code: " + str(rc))
+
+
+def on_message(client, userdata, msg):
+    print(msg.topic + " " + str(msg.payload))
+
+
+client = mqtt.Client()
+client.on_connect = on_connect
+client.on_message = on_message
+client.connect('127.0.0.1', 1883, 600)  # 600为keepalive的时间间隔
+client.publish('fifa', payload='amazing', qos=0)
+
+
+
+
+
+
 if __name__ == '__main__':
-    manager = Manager()
+    email_sender = Email_sender('872490934@qq.com', 'ultyrlpfwaqdbddd')
+
+
+    def on_connect(client, userdata, flags, rc):
+        print("Connected with result code: " + str(rc))
+
+
+    def on_message(client, userdata, msg):
+        print(msg.topic + " " + str(msg.payload))
+
+
+    client = mqtt.Client()
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.connect('127.0.0.1', 1883, 600)  # 600为keepalive的时间间隔
+    client.subscribe('fifa', qos=0)
+    client.loop_forever()  # 保持连接
+
+
+    manager = Manager(notify=email_sender)
     manager.load_tasks()
     app.run(debug=True,host='0.0.0.0')
