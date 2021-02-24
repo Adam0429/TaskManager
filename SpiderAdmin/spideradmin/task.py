@@ -6,11 +6,11 @@ import traceback
 import sys
 import inspect
 import datetime
-
 import re
-import random
 from schedule import Job
 import _thread
+import random
+from producer import Producer
 
 weekdays = (
 	'monday',
@@ -47,9 +47,10 @@ class Task(threading.Thread):
 		self.exception = None
 		self.exc_traceback = ''
 		self.if_loop = False
-		self.notify = None
+		self.if_notify = True
 		# self.log = ''
 		super(Task, self).__init__(*self.args, **self.kwargs)
+		self.init_producer()
 
 	def run(self):
 		if self.if_loop:  # 定时任务
@@ -63,8 +64,8 @@ class Task(threading.Thread):
 						self.exception = e
 						self.success = False
 						self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
-						if self.notify != None:
-							self.notify.send(['872490934@qq.com'], 'TaskManager ' + self.name, self.exc_traceback)
+						if self.if_notify:
+							self.producer.publish("TaskManager:send_email", self.exc_traceback)
 					finally:
 						self._schedule_next_run()
 						time.sleep(1)
@@ -79,8 +80,8 @@ class Task(threading.Thread):
 				self.exception = e
 				self.success = False
 				self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
-				if self.notify != None:
-					self.notify.send(['872490934@qq.com'], 'TaskManager ' + self.name, self.exc_traceback)
+				if self.if_notify:
+					self.producer.publish("TaskManager:send_email", self.exc_traceback)
 
 	def start(self,args=()):
 		if self.isAlive():
@@ -228,8 +229,9 @@ class Task(threading.Thread):
 		self.next_run = datetime.datetime(self.next_run.year, self.next_run.month, self.next_run.day, self.next_run.hour, self.next_run.minute, self.next_run.second)
 		print('下次运行时间:',self.next_run)
 
-	def set_notify(self,notify):
-		self.notify = notify
+	def init_producer(self):
+		# generate client ID with pub prefix randomly
+		self.producer = Producer('producer-'+self.name)
 
 # import time
 # def fun1(a):

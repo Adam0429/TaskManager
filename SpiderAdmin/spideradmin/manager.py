@@ -5,8 +5,7 @@ from glob import glob
 from flask import Flask, send_file, render_template,request,redirect
 from werkzeug.utils import secure_filename
 import datetime
-from email_sender import Email_sender
-import paho.mqtt.client as mqtt
+from consumer import Consumer
 
 app = Flask(__name__)
 app.config['task_path'] = 'task_code'
@@ -65,11 +64,12 @@ class Manager():
 
     def load_tasks(self):
         task_files = glob(os.path.join(app.config['task_path'],'*.py'))
+        print('loading tasks...')
         for file in task_files:
             if '__init__' not in file:
                 t = Task(name=file, file=file)
-                t.set_notify(self.notify)
                 self.add_task(t)
+        print('loading finish')
 
 @app.route("/")
 def index():
@@ -146,45 +146,17 @@ def setloop():
     return redirect("/")
 
 
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code: " + str(rc))
-
-
-def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.payload))
-
-
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
-client.connect('127.0.0.1', 1883, 600)  # 600为keepalive的时间间隔
-client.publish('fifa', payload='amazing', qos=0)
-
-
-
-
 
 
 if __name__ == '__main__':
-    email_sender = Email_sender('872490934@qq.com', 'ultyrlpfwaqdbddd')
 
+    # consumer = Consumer(id='consumer')
+    #
+    # # mqtt_server.subscribe()
+    # import threading
+    #
+    # threading.Thread(target=consumer.subscribe,args=(['TaskManager:send_email'])).start()
 
-    def on_connect(client, userdata, flags, rc):
-        print("Connected with result code: " + str(rc))
-
-
-    def on_message(client, userdata, msg):
-        print(msg.topic + " " + str(msg.payload))
-
-
-    client = mqtt.Client()
-    client.on_connect = on_connect
-    client.on_message = on_message
-    client.connect('127.0.0.1', 1883, 600)  # 600为keepalive的时间间隔
-    client.subscribe('fifa', qos=0)
-    client.loop_forever()  # 保持连接
-
-
-    manager = Manager(notify=email_sender)
+    manager = Manager(notify=None)
     manager.load_tasks()
     app.run(debug=True,host='0.0.0.0')
