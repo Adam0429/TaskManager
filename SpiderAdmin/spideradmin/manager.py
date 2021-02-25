@@ -6,15 +6,14 @@ from flask import Flask, send_file, render_template,request,redirect
 from werkzeug.utils import secure_filename
 import datetime
 from consumer import Consumer
+import threading
 
 app = Flask(__name__)
 app.config['task_path'] = 'task_code'
 
 class Manager():
-    def __init__(self,notify=None):
+    def __init__(self):
         self.tasks = []
-        if notify != None:
-            self.notify = notify
 
     def add_task(self,task):
         if task.name not in [task.name for task in self.tasks]:
@@ -149,14 +148,10 @@ def setloop():
 
 
 if __name__ == '__main__':
-
-    # consumer = Consumer(id='consumer')
-    #
-    # # mqtt_server.subscribe()
-    # import threading
-    #
+    consumer = Consumer('server')
+    consumer.subscribe(['TaskManager:send_email'])
+    # consumer.client.loop_start()
     # threading.Thread(target=consumer.subscribe,args=(['TaskManager:send_email'])).start()
-
-    manager = Manager(notify=None)
+    manager = Manager()
     manager.load_tasks()
-    app.run(debug=True,host='0.0.0.0')
+    app.run(debug=True,host='0.0.0.0',port=8000)
