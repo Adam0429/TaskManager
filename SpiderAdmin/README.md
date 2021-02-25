@@ -26,6 +26,9 @@ $ scrapyd-deploy -a
 
 4. 基于Flask-BasicAuth 做了简单的权限校验
 
+5. 增加mqtt作为消息队列，以提供服务。发邮件等
+
+6. 想再manager里开多线程运行mqtt服务器，但会有错误，暂时不知道为什么。loop_start和loop_forever都试过了。
 ## 启动运行
 
 ```
