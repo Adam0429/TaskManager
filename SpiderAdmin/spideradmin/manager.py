@@ -148,10 +148,11 @@ def setloop():
 
 
 if __name__ == '__main__':
-    consumer = Consumer('server')
-    consumer.subscribe(['TaskManager:send_email'])
-    # consumer.client.loop_start()
-    # threading.Thread(target=consumer.subscribe,args=(['TaskManager:send_email'])).start()
+    consumer = Consumer('consumer',['TaskManager:send_email'])
+    consumer.start()
+
     manager = Manager()
     manager.load_tasks()
-    app.run(debug=True,host='0.0.0.0',port=8000)
+    app.run(host='0.0.0.0',port=8000)
+
+

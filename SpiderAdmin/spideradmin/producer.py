@@ -24,7 +24,7 @@ class Producer():
 
 if __name__ == '__main__':
     producer2 = Producer('python-mqtt-2')
-    for i in range(100):
+    for i in range(10011):
         producer2.publish("TaskManager:send_email",str(i))
         import time
         time.sleep(1)
