@@ -233,6 +233,7 @@ class Task(threading.Thread):
 		# generate client ID with pub prefix randomly
 		self.producer = Producer('producer-'+self.name)
 
+
 # import time
 # def fun1(a):
 #     for i in range(10):
@@ -252,7 +253,6 @@ class Task(threading.Thread):
 # t1.start()
 # t2.start()
 # time.sleep(2)
-#
 # t1.restart()
 
 

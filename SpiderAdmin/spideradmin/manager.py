@@ -141,7 +141,6 @@ def restarttask_by_name(name):
 @app.route("/setloop_by_name",methods=['POST'])
 def setloop():
     manager.set_loop_by_name(request.form.get('task_name'),request.form.get('unit'),int(request.form.get('interval')),request.form.get('loop_start_time'))
-
     return redirect("/")
 
 

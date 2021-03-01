@@ -26,8 +26,8 @@ class Consumer():
 
     def config_email(self):
         self.config = ConfigParser()
-        self.config.read('/Users/wangfeihong/Desktop/config.conf')
-        self.email_sender = Email_sender(self.config.get('email', 'account'), self.config.get('email', 'password'))
+        self.config.read('default_config.conf')
+        self.email_sender = Email_sender(self.config.get('email', 'account'), self.config.get('email', 'password'),self.config.get('email', 'server'))
         self.receivers = eval(self.config.get('email', 'receivers'))
         self.client.subscribe('TaskManager:send_email')
 
