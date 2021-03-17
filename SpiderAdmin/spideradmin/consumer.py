@@ -11,7 +11,7 @@ class Consumer():
             else:
                 print(id,"Failed to connect, return code %d\n", rc)
         self.client.on_connect = on_connect
-        self.client.connect('test.jmqtt.io', 1883)
+        self.client.connect('test.mosquitto.org', 1883)
         self.subscribe(topics)
         self.config_email()
 
