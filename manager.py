@@ -6,6 +6,9 @@ from flask import Flask, send_file, render_template,request,redirect
 from werkzeug.utils import secure_filename
 import datetime
 from consumer import Consumer
+from emailconsumer import EmailConsumer
+from configparser import ConfigParser
+
 import threading
 
 app = Flask(__name__)
@@ -147,8 +150,11 @@ def setloop():
 
 
 if __name__ == '__main__':
-    consumer = Consumer('consumer',['TaskManager:send_email'])
-    consumer.start()
+    config = ConfigParser()
+    config.read('default_config.conf')
+    if config.get('consumer', 'email') == 'on':
+        emailconsumer = EmailConsumer('EmailConsumer')
+        emailconsumer.start()
 
     manager = Manager()
     manager.load_tasks()

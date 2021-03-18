@@ -47,9 +47,9 @@ class Task(threading.Thread):
 		self.exception = None
 		self.exc_traceback = ''
 		self.if_loop = False
-		self.if_notify = True
+		self.if_notify = True  #可以改成level,按照warn,error,info处理
 		# self.log = ''
-		super(Task, self).__init__(*self.args, **self.kwargs)
+		super().__init__(*self.args, **self.kwargs)
 		self.init_producer()
 
 	def run(self):
@@ -60,6 +60,7 @@ class Task(threading.Thread):
 					try:
 						self._target(*self._args, **self._kwargs)
 						self.success = True
+						self.exc_traceback = ''
 					except Exception as e:
 						self.exception = e
 						self.success = False

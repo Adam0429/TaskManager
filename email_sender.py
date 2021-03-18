@@ -17,6 +17,7 @@ class Email_sender:
         message['To'] = Header("", 'utf-8')
         message['Subject'] = Header(subject, 'utf-8')
         self.server.sendmail(self.account, receivers, message.as_string())
+        print('已发送！！！')
         # server.quit()
 
 
