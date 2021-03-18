@@ -63,7 +63,7 @@ def signIn():
 		# email(subject=f"{datetime.now().date()}签到成功！获得积分{str(response.json()['data']['point'])}")
 	else:
 		print(f"签到失败！{response.text}")
-		# raise Exception("抛出一个异常")
+		raise Exception("抛出一个异常")
 		# email(text=f"{datetime.now().date()}签到失败！{response.text}")
 
 def run():
