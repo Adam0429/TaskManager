@@ -11,7 +11,11 @@ class Consumer():
         self.client.on_connect = on_connect
         self.client.connect('test.mosquitto.org', 1883)
         self.subscribe(topic)
+        self.config()
         # self.config_email()
+
+    def config(self):
+        pass
 
     def subscribe(self,topics):
         pass

@@ -1,6 +1,5 @@
 import threading
 import time
-import inspect
 import ctypes
 import traceback
 import sys
@@ -58,6 +57,7 @@ class Task(threading.Thread):
 				self._is_stopped = False
 				if datetime.datetime.now() > self.next_run:
 					try:
+						self.producer.publish('TaskManager:log',self.name+' run')
 						self._target(*self._args, **self._kwargs)
 						self.success = True
 						self.exc_traceback = ''
@@ -65,8 +65,9 @@ class Task(threading.Thread):
 						self.exception = e
 						self.success = False
 						self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
+						self.producer.publish('TaskManager:log', self.name + ' failed ' + self.exc_traceback)
 						if self.if_notify:
-							self.producer.publish("TaskManager:send_email", self.exc_traceback)
+							self.producer.publish('TaskManager:send_email', self.exc_traceback)
 					finally:
 						self._schedule_next_run()
 						time.sleep(1)
@@ -74,6 +75,7 @@ class Task(threading.Thread):
 		else:
 			self._is_stopped = False
 			try:
+				self.producer.publish('TaskManager:log', self.name + ' run')
 				self._target(*self._args, **self._kwargs)
 				self.success = True
 
@@ -81,8 +83,9 @@ class Task(threading.Thread):
 				self.exception = e
 				self.success = False
 				self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
+				self.producer.publish('TaskManager:log', self.name + ' failed ' + self.exc_traceback)
 				if self.if_notify:
-					self.producer.publish("TaskManager:send_email", self.exc_traceback)
+					self.producer.publish('TaskManager:send_email', self.exc_traceback)
 
 	def start(self,args=()):
 		if self.isAlive():
@@ -105,10 +108,12 @@ class Task(threading.Thread):
 		"""raises SystemExit in the context of the given thread, which should
 		cause the thread to exit silently (unless caught)"""
 		if self.isAlive() == False:
-			print(self.name, '任务已经停止!')
+			print(self.name, '停止失败！cause:任务已经停止')
+			self.producer.publish('TaskManager:log', self.name + ' stop failed')
 		else:
-			print(self.name,'任务停止!')
+			print(self.name,'任务停止成功!')
 			self.raise_exc(SystemExit)
+			self.producer.publish('TaskManager:log', self.name + ' stop failed')
 			time.sleep(1)
 			# """" 如果不用sleep函数，restart()会提示：任务已经在执行。因为是stop函数没有执行完成，上一个线程还没有被杀死"""
 			# self._is_stopped = True

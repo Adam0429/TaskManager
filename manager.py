@@ -8,7 +8,7 @@ import datetime
 from consumer import Consumer
 from emailconsumer import EmailConsumer
 from configparser import ConfigParser
-
+from logconsumer import LogConsumer
 import threading
 
 app = Flask(__name__)
@@ -155,6 +155,9 @@ if __name__ == '__main__':
     if config.get('consumer', 'email') == 'on':
         emailconsumer = EmailConsumer('EmailConsumer')
         emailconsumer.start()
+    if config.get('consumer', 'log') == 'on':
+        logconsumer = LogConsumer('LogConsumer')
+        logconsumer.start()
 
     manager = Manager()
     manager.load_tasks()

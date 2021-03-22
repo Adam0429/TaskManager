@@ -6,7 +6,6 @@ from consumer import Consumer
 class EmailConsumer(Consumer):
     def __init__(self,id):
         self.topic = 'TaskManager:send_email'
-        self.config_email()
         super().__init__(id,self.topic)
 
 
@@ -17,7 +16,7 @@ class EmailConsumer(Consumer):
         self.client.on_message = on_message
         self.client.subscribe(self.topic)
 
-    def config_email(self):
+    def config(self):
         self.config = ConfigParser()
         self.config.read('default_config.conf')
         self.email_sender = Email_sender(self.config.get('email', 'account'), self.config.get('email', 'password'),self.config.get('email', 'server'))
