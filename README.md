@@ -28,12 +28,29 @@
 
 配置default_config.conf
 
+[mqtt]
+server=broker.mqttdashboard.com  
+port=1883
+# mqtt的域名和端口号，如mqtt服务器不可用，运行后会报错或一直重试connected
+[consumer]
+log=on
+email=on
+# 是否开启log和email服务
+[email]
+account=example@qq.com
+password=examplepassword
+server=smtp.qq.com
+receivers=['example2@qq.com']
+# 用于发邮件的配置
+
 $ python3 manager.py       # 启动服务
 
 ```
 访问：
 http://127.0.0.1:8000/
 
+或用docker方式部署
+docker image build -t taskmanager-docker .
 
 ## TODO
 1. 将每个task的配置写进文件进行持久化（定时）

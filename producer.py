@@ -7,7 +7,7 @@ class Producer():
                 print(id,"Connected to MQTT Broker!")
             else:
                 print(id,"Failed to connect, return code %d\n", rc)
-        self.broker = 'test.mosquitto.org'
+        self.broker = 'broker.mqttdashboard.com'
         self.port = 1883
         self.client_id = id
         self.client = mqtt_client.Client(self.client_id)

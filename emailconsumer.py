@@ -9,7 +9,7 @@ class EmailConsumer(Consumer):
         super().__init__(id,self.topic)
 
 
-    def subscribe(self,topics):
+    def subscribe(self,topic):
         def on_message(client, userdata, msg):
             print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
             self.email_sender.send(self.receivers,self.topic,msg.payload.decode())
@@ -33,6 +33,5 @@ if __name__ == '__main__':
     consumer.start()
     while 1:
         pass
-    consumer.subscribe(['TaskManager:send_email'])
 
 

@@ -1,4 +1,5 @@
 from paho.mqtt import client as mqtt_client
+from configparser import ConfigParser
 
 class Consumer():
     def __init__(self,id,topic):
@@ -9,7 +10,13 @@ class Consumer():
             else:
                 print(id,"Failed to connect, return code %d\n", rc)
         self.client.on_connect = on_connect
-        self.client.connect('test.mosquitto.org', 1883)
+
+        config = ConfigParser()
+        config.read('default_config.conf')
+        server = config.get('mqtt', 'server')
+        port = int(config.get('mqtt', 'port'))
+
+        self.client.connect(server, port)
         self.subscribe(topic)
         self.config()
         # self.config_email()
@@ -17,7 +24,7 @@ class Consumer():
     def config(self):
         pass
 
-    def subscribe(self,topics):
+    def subscribe(self,topic):
         pass
 
     def start(self):
@@ -27,7 +34,7 @@ class Consumer():
         self.client.loop_stop()
 
 if __name__ == '__main__':
-    consumer = Consumer('123',['TaskManager:send_email'])
+    consumer = Consumer('123')
     consumer.start()
     while 1:
         pass

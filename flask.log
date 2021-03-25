@@ -1,0 +1,23 @@
+[2021-03-25 16:57:36,029][logconsumer:15][ERROR][123145436020736] - f4 run
+[2021-03-25 16:57:46,846][logconsumer:15][ERROR][123145436020736] - f4 run
+[2021-03-25 17:28:18,939][logconsumer:15][ERROR][123145574371328] - 华住签到 run
+[2021-03-25 17:33:59,853][logconsumer:15][INFO][123145372864512] - f4 run
+[2021-03-25 17:34:20,653][logconsumer:15][INFO][123145466056704] - f4 run
+[2021-03-25 17:42:26,033][logconsumer:16][INFO][123145510768640] - f1 run
+[2021-03-25 17:42:28,037][logconsumer:16][INFO][123145510768640] - f1 failed Traceback (most recent call last):
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 7, in run
+    raise Exception('错误1！！')
+Exception: 错误1！！
+
+[2021-03-25 17:42:37,608][logconsumer:16][INFO][123145510768640] - 华住签到 run
+[2021-03-25 17:42:37,965][logconsumer:16][INFO][123145510768640] - 华住签到 failed Traceback (most recent call last):
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/华住签到.py", line 71, in run
+    signIn()
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/华住签到.py", line 66, in signIn
+    raise Exception("抛出一个异常")
+Exception: 抛出一个异常
+

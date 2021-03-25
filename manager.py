@@ -1,15 +1,12 @@
 from task import Task
-import time
 import os
 from glob import glob
 from flask import Flask, send_file, render_template,request,redirect
-from werkzeug.utils import secure_filename
 import datetime
-from consumer import Consumer
 from emailconsumer import EmailConsumer
 from configparser import ConfigParser
 from logconsumer import LogConsumer
-import threading
+import logging
 
 app = Flask(__name__)
 app.config['task_path'] = 'task_code'
@@ -156,8 +153,9 @@ if __name__ == '__main__':
         emailconsumer = EmailConsumer('EmailConsumer')
         emailconsumer.start()
     if config.get('consumer', 'log') == 'on':
-        logconsumer = LogConsumer('LogConsumer')
+        logconsumer = LogConsumer('LogConsumer',logger=app.logger)
         logconsumer.start()
+
 
     manager = Manager()
     manager.load_tasks()

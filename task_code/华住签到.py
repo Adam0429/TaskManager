@@ -55,7 +55,7 @@ def signIn():
 	  'state': '0',
 	  'channel': 'APP',
 	  'source': 'APP',
-	  'sk': '5b09c1051c204a6d8b47fa0e1b3020f2069615093'
+	  'sk': 'cfe53a2265834b81b3b3ce4ca79f5920069615093'
 	}
 	response = requests.post('https://newactivity.huazhu.com/v1/pointStore/signIn', headers=headers, data=data,verify=False)
 	if response.json()['data']['success']:
@@ -73,6 +73,8 @@ def run():
 	# finally:
 	# 	time.sleep(60*60*24)
 
+if __name__ == '__main__':
+	run()
 # 抽奖
 # headers = {
 #  'Host': 'newactivity.huazhu.com',

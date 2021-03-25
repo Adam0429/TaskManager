@@ -1,6 +1,7 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
+from configparser import ConfigParser
 
 class Email_sender:
     def __init__(self,account,password,smtp_server):
@@ -21,5 +22,10 @@ class Email_sender:
         # server.quit()
 
 
-
-
+if __name__ == '__main__':
+    config = ConfigParser()
+    config.read('default_config.conf')
+    email_sender = Email_sender(config.get('email', 'account'), config.get('email', 'password'),
+                                     config.get('email', 'server'))
+    receivers = eval(config.get('email', 'receivers'))
+    email_sender.send(receivers, '123', 'test')

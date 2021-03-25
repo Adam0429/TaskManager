@@ -113,7 +113,7 @@ class Task(threading.Thread):
 		else:
 			print(self.name,'任务停止成功!')
 			self.raise_exc(SystemExit)
-			self.producer.publish('TaskManager:log', self.name + ' stop failed')
+			self.producer.publish('TaskManager:log', self.name + ' stop succeed')
 			time.sleep(1)
 			# """" 如果不用sleep函数，restart()会提示：任务已经在执行。因为是stop函数没有执行完成，上一个线程还没有被杀死"""
 			# self._is_stopped = True
