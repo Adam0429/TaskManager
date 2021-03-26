@@ -26,7 +26,6 @@ class LogConsumer(Consumer):
         handler.setFormatter(formatter)
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(handler)
-        pass
 
     def start(self):
         super().start()

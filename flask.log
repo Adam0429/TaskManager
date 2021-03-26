@@ -21,3 +21,21 @@ Exception: 错误1！！
     raise Exception("抛出一个异常")
 Exception: 抛出一个异常
 
+[2021-03-26 16:45:58,917][logconsumer:16][INFO][123145435000832] - f1 run
+[2021-03-26 16:46:00,820][logconsumer:16][INFO][123145435000832] - f1 failed Traceback (most recent call last):
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 7, in run
+    raise Exception('错误1！！')
+Exception: 错误1！！
+
+[2021-03-26 16:46:08,711][logconsumer:16][INFO][123145435000832] - f4 run
+[2021-03-26 17:10:35,342][logconsumer:16][INFO][123145501884416] - 邮件配置错误！
+[2021-03-26 17:10:56,166][logconsumer:16][INFO][123145501884416] - f1 run
+[2021-03-26 17:10:58,284][logconsumer:16][INFO][123145501884416] - f1 failed Traceback (most recent call last):
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 7, in run
+    raise Exception('错误1！！')
+Exception: 错误1！！
+

@@ -45,13 +45,25 @@ receivers=['example2@qq.com']
 
 $ python3 manager.py       # 启动服务
 
+访问：
+http://127.0.0.1:8000/
 ```
+
+## 部署在docker
+
+```
+docker image build -t taskmanager-docker .   # 根据Dockerfile创建镜像
+
+docker images   # 查看本机镜像,检查taskmanager-docker是否创建成功
+
+docker run -it -p 8000:8000 taskmanager-docker  # 创建容器并进入
+
+python3 manager.py  # 启动服务
+
 访问：
 http://127.0.0.1:8000/
 
-或用docker方式部署
-docker image build -t taskmanager-docker .
-
+```
 ## TODO
 1. 将每个task的配置写进文件进行持久化（定时）
 2. ~~完善task的运行暂停部分，做到兼容定时任务~~
@@ -60,6 +72,9 @@ docker image build -t taskmanager-docker .
 5. 做nginx认证,支持分布式多机部署
 6. ~~测试爬虫源码的可用性~~
 7. ~~mqtt在flask模块启动一直提示重新连接服务器，最后发现是app debug参数造成的~~
+8. ~~在配置邮箱账号出错时继续运行，并记录到日志。~~
+9. 根据warning,error,info等级别，对日志模块进行改进
+10. ~~制作docker镜像~~
 
 ## 更新日志
 

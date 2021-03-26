@@ -8,18 +8,33 @@ class EmailConsumer(Consumer):
         self.topic = 'TaskManager:send_email'
         super().__init__(id,self.topic)
 
-
     def subscribe(self,topic):
         def on_message(client, userdata, msg):
             print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
-            self.email_sender.send(self.receivers,self.topic,msg.payload.decode())
+            result = self.email_sender.send(self.receivers,self.topic,msg.payload.decode())
+            if result:
+                self.publish('TaskManager:log', '邮件发送成功！')
+            else:
+                self.publish('TaskManager:log', '邮件发送失败！')
         self.client.on_message = on_message
         self.client.subscribe(self.topic)
+
+    # 这里为了记录邮件发送的日志，所以添加了publish功能
+    def publish(self, topic, text):
+        result = self.client.publish(topic, text)
+        status = result[0]
+        if status == 0:
+            print(f"Send `{text}` to topic `{topic}`")
+        else:
+            print(f"Failed to send message to topic {topic}")
 
     def config(self):
         self.config = ConfigParser()
         self.config.read('default_config.conf')
-        self.email_sender = Email_sender(self.config.get('email', 'account'), self.config.get('email', 'password'),self.config.get('email', 'server'))
+        try:
+            self.email_sender = Email_sender(self.config.get('email', 'account'), self.config.get('email', 'password'),self.config.get('email', 'server'))
+        except:
+            self.publish('TaskManager:log','邮件配置错误！')
         self.receivers = eval(self.config.get('email', 'receivers'))
 
     def start(self):

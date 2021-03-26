@@ -149,12 +149,13 @@ def setloop():
 if __name__ == '__main__':
     config = ConfigParser()
     config.read('default_config.conf')
-    if config.get('consumer', 'email') == 'on':
-        emailconsumer = EmailConsumer('EmailConsumer')
-        emailconsumer.start()
     if config.get('consumer', 'log') == 'on':
         logconsumer = LogConsumer('LogConsumer',logger=app.logger)
         logconsumer.start()
+    if config.get('consumer', 'email') == 'on':
+        emailconsumer = EmailConsumer('EmailConsumer')
+        emailconsumer.start()
+
 
 
     manager = Manager()
