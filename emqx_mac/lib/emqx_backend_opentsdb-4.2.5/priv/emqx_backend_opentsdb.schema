@@ -1,0 +1,69 @@
+%%-*- mode: erlang -*-
+%% emqx_backend_opentsdb config mapping
+
+{mapping, "backend.opentsdb.$name.server", "emqx_backend_opentsdb.pools", [
+  {default, "127.0.0.1:4242"},
+  {datatype, string}
+]}.
+
+{mapping, "backend.opentsdb.$name.pool_size", "emqx_backend_opentsdb.pools", [
+  {default, 8},
+  {datatype, integer}
+]}.
+
+{mapping, "backend.opentsdb.$name.summary", "emqx_backend_opentsdb.pools", [
+  {default, true},
+  {datatype, {enum, [true, false]}}
+]}.
+
+{mapping, "backend.opentsdb.$name.details", "emqx_backend_opentsdb.pools", [
+  {default, false},
+  {datatype, {enum, [true, false]}}
+]}.
+
+{mapping, "backend.opentsdb.$name.sync", "emqx_backend_opentsdb.pools", [
+  {default, true},
+  {datatype, {enum, [true, false]}}
+]}.
+
+{mapping, "backend.opentsdb.$name.sync_timeout", "emqx_backend_opentsdb.pools", [
+  {default, 0},
+  {datatype, integer}
+]}.
+
+{mapping, "backend.opentsdb.$name.max_batch_size", "emqx_backend_opentsdb.pools", [
+  {default, 20},
+  {datatype, [integer, {duration, ms}]}
+]}.
+
+{translation, "emqx_backend_opentsdb.pools", fun(Conf) ->
+  Vars = cuttlefish_variable:fuzzy_matches(["backend", "opentsdb", "$name", "server"], Conf),
+  Key = fun(Name, Attr) -> string:join(["backend.opentsdb", Name, Attr], ".") end,
+  lists:map(fun({_, Name}) ->
+    Server = cuttlefish:conf_get(Key(Name, "server"), Conf),
+    Server1 =
+      case string:tokens(Server, ":") of
+        [Domain] -> Domain ++ ":4242";
+        [_Domain, _Port] -> Server
+      end,
+    {list_to_atom(Name), [{server, Server1},
+                          {pool_size, cuttlefish:conf_get(Key(Name, "pool_size"), Conf)},
+                          {summary, cuttlefish:conf_get(Key(Name, "summary"), Conf)},
+                          {details, cuttlefish:conf_get(Key(Name, "details"), Conf)},
+                          {sync, cuttlefish:conf_get(Key(Name, "sync"), Conf)},
+                          {sync_timeout, cuttlefish:conf_get(Key(Name, "sync_timeout"), Conf)},
+                          {max_batch_size, cuttlefish:conf_get(Key(Name, "max_batch_size"), Conf)}]}
+  end, Vars)
+end}.
+
+{mapping, "backend.opentsdb.hook.message.publish.$name", "emqx_backend_opentsdb.hooks", [
+  {datatype, string}
+]}.
+
+{translation, "emqx_backend_opentsdb.hooks", fun(Conf) ->
+  Hooks = cuttlefish_variable:filter_by_prefix("backend.opentsdb.hook", Conf),
+  lists:map(
+    fun({[_, _, _,Name1,Name2, _], Val}) -> 
+    {lists:concat([Name1,".",Name2]), list_to_binary(Val)}
+  end, Hooks)
+end}.

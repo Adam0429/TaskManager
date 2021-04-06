@@ -6,15 +6,15 @@ from consumer import Consumer
 class EmailConsumer(Consumer):
     def __init__(self,id):
         self.topic = 'TaskManager:send_email'
-        super().__init__(id,self.topic)
+        super().__init__(id)
 
-    def subscribe(self,topic):
+    def subscribe(self):
         def on_message(client, userdata, msg):
             print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
-            result = self.email_sender.send(self.receivers,self.topic,msg.payload.decode())
-            if result:
+            try:
+                self.email_sender.send(self.receivers,self.topic,msg.payload.decode())
                 self.publish('TaskManager:log', '邮件发送成功！')
-            else:
+            except:
                 self.publish('TaskManager:log', '邮件发送失败！')
         self.client.on_message = on_message
         self.client.subscribe(self.topic)

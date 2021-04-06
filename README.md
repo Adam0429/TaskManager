@@ -43,7 +43,9 @@ server=smtp.qq.com
 receivers=['example2@qq.com']
 # 用于发邮件的配置
 
-$ python3 manager.py       # 启动服务
+emqx_mac/bin/emqx start # 启动mqtt服务器
+
+python3 manager.py       # 启动服务
 
 访问：
 http://127.0.0.1:8000/
@@ -57,6 +59,8 @@ docker image build -t taskmanager-docker .   # 根据Dockerfile创建镜像
 docker images   # 查看本机镜像,检查taskmanager-docker是否创建成功
 
 docker run -it -p 8000:8000 taskmanager-docker  # 创建容器并进入
+
+emqx_ubuntu/bin/emqx start # 启动mqtt服务器
 
 python3 manager.py  # 启动服务
 
@@ -75,7 +79,7 @@ http://127.0.0.1:8000/
 8. ~~在配置邮箱账号出错时继续运行，并记录到日志。~~
 9. 根据warning,error,info等级别，对日志模块进行改进
 10. ~~制作docker镜像~~
-
+11. ~~自己搭建mqtt服务器~~
 ## 更新日志
 
 | 版本 | 日期 | 描述|

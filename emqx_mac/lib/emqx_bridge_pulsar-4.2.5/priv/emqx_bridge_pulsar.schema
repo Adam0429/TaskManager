@@ -1,0 +1,107 @@
+%% emqx_bridge_pulsar config
+{mapping, "bridge.pulsar.servers", "emqx_bridge_pulsar.servers", [
+  {default, {"127.0.0.1", 6650}},
+  {datatype, [integer, ip, string]}
+]}.
+
+{mapping, "bridge.pulsar.produce", "emqx_bridge_pulsar.produce", [
+  {datatype, {enum, [sync, async]}},
+  {default, sync}
+]}.
+
+{mapping, "bridge.pulsar.produce.sync_timeout", "emqx_bridge_pulsar.produce_sync_timeout", [
+  {datatype, {duration, ms}},
+  {default, "3s"}
+]}.
+
+{translation, "emqx_bridge_pulsar.servers", fun(Conf) ->
+  case cuttlefish:conf_get("bridge.pulsar.servers", Conf) of
+    {Ip, Port} -> [{Ip, Port}];
+    S          ->
+      ServerList = string:tokens(S, ","),
+      lists:map(fun(Server) ->
+        case string:tokens(Server, ":") of
+          [Domain]       -> {Domain, 9092};
+          [Domain, Port] -> {Domain, list_to_integer(Port)}
+        end
+      end, ServerList)
+  end
+end}.
+
+{mapping, "bridge.pulsar.encode_payload_type", "emqx_bridge_pulsar.encode_payload_type", [
+  {datatype, {enum, [base64, plain]}},
+  {default, base64}
+]}.
+
+{mapping, "bridge.pulsar.producer.batch_size", "emqx_bridge_pulsar.producer", [
+  {datatype, integer},
+  {default, 0}
+]}.
+
+{mapping, "bridge.pulsar.producer.compression", "emqx_bridge_pulsar.producer", [
+  {datatype, atom}
+]}.
+
+{translation, "emqx_bridge_pulsar.producer", fun(Conf) ->
+  Filter  = fun(Opts) -> [{K, V} || {K, V} <- Opts, V =/= undefined] end,
+  Filter([{batch_size, cuttlefish:conf_get("bridge.pulsar.producer.batch_size", Conf, undefined)},
+          {compression,cuttlefish:conf_get("bridge.pulsar.producer.compression", Conf, undefined)}])
+end}.
+
+{mapping, "bridge.pulsar.hook.client.connected.$name", "emqx_bridge_pulsar.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "bridge.pulsar.hook.client.disconnected.$name", "emqx_bridge_pulsar.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "bridge.pulsar.hook.session.subscribed.$name", "emqx_bridge_pulsar.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "bridge.pulsar.hook.session.unsubscribed.$name", "emqx_bridge_pulsar.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "bridge.pulsar.hook.message.publish.$name", "emqx_bridge_pulsar.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "bridge.pulsar.hook.message.acked.$name", "emqx_bridge_pulsar.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "bridge.pulsar.hook.message.delivered.$name", "emqx_bridge_pulsar.hooks", [
+  {datatype, string}
+]}.
+
+{translation, "emqx_bridge_pulsar.hooks", fun(Conf) ->
+  Hooks = cuttlefish_variable:filter_by_prefix("bridge.pulsar.hook", Conf),
+  lists:map(
+    fun({[_, _, _,Name1,Name2, _], Val}) ->
+    {lists:concat([Name1,".",Name2]), list_to_binary(Val)}
+  end, Hooks)
+end}.
+
+{mapping, "bridge.pulsar.sock.buffer", "emqx_bridge_pulsar.sock_opts", [
+  {datatype, bytesize}
+]}.
+
+{mapping, "bridge.pulsar.sock.recbuf", "emqx_bridge_pulsar.sock_opts", [
+  {datatype, bytesize}
+]}.
+{mapping, "bridge.pulsar.sock.sndbuf", "emqx_bridge_pulsar.sock_opts", [
+  {datatype, bytesize}
+]}.
+{mapping, "bridge.pulsar.sock.read_packets", "emqx_bridge_pulsar.sock_opts", [
+  {datatype, integer}
+]}.
+
+{translation, "emqx_bridge_pulsar.sock_opts", fun(Conf) ->
+  Filter  = fun(Opts) -> [{K, V} || {K, V} <- Opts, V =/= undefined] end,
+  Filter([{recbuf,       cuttlefish:conf_get("bridge.pulsar.sock.buffer", Conf, undefined)},
+          {recbuf,       cuttlefish:conf_get("bridge.pulsar.sock.recbuf", Conf, undefined)},
+          {sndbuf,       cuttlefish:conf_get("bridge.pulsar.sock.sndbuf", Conf, undefined)},
+          {read_packets, cuttlefish:conf_get("bridge.pulsar.sock.read_packets", Conf, undefined)}])
+end}.

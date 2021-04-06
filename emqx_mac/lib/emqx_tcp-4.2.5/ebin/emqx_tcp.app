@@ -1,0 +1,11 @@
+{application,emqx_tcp,
+             [{description,"EMQ X TCP based Connector"},
+              {vsn,"4.2.5"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {env,[]},
+              {mod,{emqx_tcp_app,[]}},
+              {modules,[emqx_tcp_app,emqx_tcp_connection,emqx_tcp_frame,
+                        emqx_tcp_protocol,emqx_tcp_sup]},
+              {links,[]},
+              {relup_deps,[emqx]}]}.

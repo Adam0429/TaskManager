@@ -1,8 +1,9 @@
 from paho.mqtt import client as mqtt_client
 from configparser import ConfigParser
+import paho.mqtt.client as mqtt
 
 class Consumer():
-    def __init__(self,id,topic):
+    def __init__(self,id):
         self.client = mqtt_client.Client(id)
         def on_connect(client, userdata, flags, rc):
             if rc == 0:
@@ -16,15 +17,16 @@ class Consumer():
         server = config.get('mqtt', 'server')
         port = int(config.get('mqtt', 'port'))
 
+        # self.client.username_pw_set(username="admin", password="password")# 必须设置，否则会返回「Connected with result code 4」
         self.client.connect(server, port)
-        self.subscribe(topic)
+        self.subscribe()
         self.config()
         # self.config_email()
 
     def config(self):
         pass
 
-    def subscribe(self,topic):
+    def subscribe(self):
         pass
 
     def start(self):
@@ -38,5 +40,8 @@ if __name__ == '__main__':
     consumer.start()
     while 1:
         pass
+
+
+
 
 

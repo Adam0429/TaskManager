@@ -1,0 +1,12 @@
+{"type": "record", "name":"receive", "namespace": "io.emqx.avro",
+ "fields": [
+ {"name": "clientid", "type": "bytes"},
+     {"name": "username", "type": "bytes"},
+     {"name": "from", "type": "bytes"},
+     {"name": "topic", "type": "bytes"},
+     {"name": "payload", "type": "bytes"},
+     {"name": "qos", "type": "int"},
+     {"name": "node", "type": "string"},
+     {"name": "ts", "type": "long"},
+ ]
+}

@@ -1,0 +1,13 @@
+{application,emqx_recon,
+             [{description,"EMQ X Recon Plugin"},
+              {vsn,"4.2.9"},
+              {modules,[emqx_recon,emqx_recon_cli]},
+              {registered,[]},
+              {applications,[kernel,stdlib,recon]},
+              {mod,{emqx_recon,[]}},
+              {env,[]},
+              {licenses,["Apache-2.0"]},
+              {maintainers,["EMQ X Team <contact@emqx.io>"]},
+              {links,[{"Homepage","https://emqx.io/"},
+                      {"Github","https://github.com/emqx/emqx-recon"}]},
+              {relup_deps,[emqx]}]}.

@@ -1,0 +1,12 @@
+{application,ecpool,
+             [{description,"Erlang Client/Connection Pool"},
+              {vsn,"0.5.1"},
+              {registered,[]},
+              {applications,[kernel,stdlib,gproc]},
+              {mod,{ecpool_app,[]}},
+              {env,[]},
+              {licenses,["Apache-2.0"]},
+              {maintainers,["Feng Lee <feng@emqx.io>"]},
+              {links,[{"Github","https://github.com/emqx/ecpool"}]},
+              {modules,[ecpool,ecpool_app,ecpool_pool,ecpool_pool_sup,
+                        ecpool_sup,ecpool_worker,ecpool_worker_sup]}]}.

@@ -1,0 +1,12 @@
+{application,grpc,
+             [{description,"An Erlang implementation of gRPC "},
+              {vsn,"0.5.0"},
+              {registered,[]},
+              {mod,{grpc_app,[]}},
+              {applications,[kernel,stdlib,cowboy,gun]},
+              {env,[]},
+              {modules,[grpc,grpc_app,grpc_client,grpc_client_sup,
+                        grpc_cowboy_h,grpc_frame,grpc_lib,grpc_stream_h,
+                        grpc_sup]},
+              {licenses,["Apache 2.0"]},
+              {links,[]}]}.

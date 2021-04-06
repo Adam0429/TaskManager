@@ -13,15 +13,12 @@ class Email_sender:
         self.server.login(account, password)
 
     def send(self,receivers,subject,text):
-        try:
-            message = MIMEText(text, 'plain', 'utf-8')
-            message['From'] = Header(subject, 'utf-8')
-            message['To'] = Header("", 'utf-8')
-            message['Subject'] = Header(subject, 'utf-8')
-            self.server.sendmail(self.account, receivers, message.as_string())
-            return 1
-        except:
-            return 0
+        message = MIMEText(text, 'plain', 'utf-8')
+        message['From'] = Header(subject, 'utf-8')
+        message['To'] = Header("", 'utf-8')
+        message['Subject'] = Header(subject, 'utf-8')
+        self.server.sendmail(self.account, receivers, message.as_string())
+        return 1
         # server.quit()
 
 

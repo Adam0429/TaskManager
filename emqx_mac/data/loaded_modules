@@ -1,0 +1,25 @@
+[{
+    "name": "internal_acl",
+    "enable": true,
+    "configs": {"acl_rule_file": "etc/acl.conf"}
+},
+{
+    "name": "presence",
+    "enable": true,
+    "configs": {"qos": 0}
+},
+{
+    "name": "recon",
+    "enable": true,
+    "configs": {}
+},
+{
+    "name": "retainer",
+    "enable": true,
+    "configs": {
+        "expiry_interval": 0,
+        "max_payload_size": "1MB",
+        "max_retained_messages": 0,
+        "storage_type": "ram"
+    }
+}]

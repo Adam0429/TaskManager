@@ -3,14 +3,13 @@ from consumer import Consumer
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
-
 class LogConsumer(Consumer):
     def __init__(self,id,logger):
         self.topic = 'TaskManager:log'
         self.logger = logger
-        super().__init__(id,self.topic)
+        super().__init__(id)
 
-    def subscribe(self,topic):
+    def subscribe(self):
         def on_message(client, userdata, msg):
             print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
             self.logger.info(msg.payload.decode())
@@ -34,7 +33,7 @@ class LogConsumer(Consumer):
         super().stop()
 
 if __name__ == '__main__':
-    consumer = LogConsumer('123')
+    consumer = LogConsumer('123',logger=logging.getLogger(__name__))
     consumer.start()
     while 1:
         pass

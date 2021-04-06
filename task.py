@@ -67,7 +67,7 @@ class Task(threading.Thread):
 						self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
 						self.producer.publish('TaskManager:log', self.name + ' failed ' + self.exc_traceback)
 						if self.if_notify:
-							self.producer.publish('TaskManager:send_email', self.exc_traceback)
+							self.producer.publish('TaskManager:send_email', self.name + ' failed ' + self.exc_traceback)
 					finally:
 						self._schedule_next_run()
 						time.sleep(1)

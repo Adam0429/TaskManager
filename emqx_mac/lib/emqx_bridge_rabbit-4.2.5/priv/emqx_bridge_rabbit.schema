@@ -1,0 +1,95 @@
+%%-*- mode: erlang -*-
+%% emqx_bridge_rabbit config
+
+{mapping, "bridge.rabbit.$id.server", "emqx_bridge_rabbit.pools", [
+  {default, {"127.0.0.1", 9092}},
+  {datatype, [integer, ip, string]}
+]}.
+
+{mapping, "bridge.rabbit.$id.pool_size", "emqx_bridge_rabbit.pools", [
+  {default, 8},
+  {datatype, integer}
+]}.
+
+{mapping, "bridge.rabbit.$id.username", "emqx_bridge_rabbit.pools", [
+  {default, "guest"},
+  {datatype, string}
+]}.
+
+{mapping, "bridge.rabbit.$id.password", "emqx_bridge_rabbit.pools", [
+  {default, "guest"},
+  {datatype, string}
+]}.
+
+{mapping, "bridge.rabbit.$id.timeout", "emqx_bridge_rabbit.pools", [
+  {default, "5s"},
+  {datatype, {duration, ms}}
+]}.
+
+{mapping, "bridge.rabbit.$id.virtual_host", "emqx_bridge_rabbit.pools", [
+  {default, "/"},
+  {datatype, string}
+]}.
+
+{mapping, "bridge.rabbit.$id.heartbeat", "emqx_bridge_rabbit.pools", [
+  {default, 0},
+  {datatype, {duration, s}}
+]}.
+
+{mapping, "bridge.rabbit.prefer_ipv6", "amqp_client.prefer_ipv6", [
+  {default, on},
+  {datatype, flag}
+]}.
+
+{translation, "emqx_bridge_rabbit.pools", fun(Conf) ->
+  Rabbits = cuttlefish_variable:fuzzy_matches(["bridge", "rabbit", "$id", "server"], Conf),
+  Key = fun(Id, Attr) -> string:join(["bridge.rabbit", Id, Attr], ".") end,
+  lists:map(fun({_, Id}) ->
+    {RHost, RPort} = case cuttlefish:conf_get(Key(Id, "server"), Conf) of
+                         {Ip, Port} -> {Ip, Port};
+                         S          -> case string:tokens(S, ":") of
+                                           [Domain]       -> {Domain, 9092};
+                                           [Domain, Port] -> {Domain, list_to_integer(Port)}
+                                       end
+                     end,
+    PoolSize = cuttlefish:conf_get(Key(Id, "pool_size"), Conf, 8),
+    Username = cuttlefish:conf_get(Key(Id, "username"), Conf, "guest"),
+    Password = cuttlefish:conf_get(Key(Id, "password"), Conf, "guest"),
+    Timeout = cuttlefish:conf_get(Key(Id, "timeout"), Conf, "5000"),
+    VirtualHost = cuttlefish:conf_get(Key(Id, "virtual_host"), Conf, "/"),
+    Heartbeat = cuttlefish:conf_get(Key(Id, "heartbeat"), Conf, 0),
+    {list_to_integer(Id),
+     [{host, RHost},
+      {port, RPort},
+      {pool_size, PoolSize},
+      {username, Username},
+      {password, Password},
+      {virtual_host, VirtualHost},
+      {heartbeat, Heartbeat},
+      {timeout, Timeout},
+      {auto_reconnect, 2}
+     ]}
+  end, Rabbits)
+end}.
+
+{mapping, "bridge.rabbit.hook.message.publish.$id", "emqx_bridge_rabbit.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "bridge.rabbit.hook.session.subscribed.$id", "emqx_bridge_rabbit.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "bridge.rabbit.hook.session.unsubscribed.$id", "emqx_bridge_rabbit.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "bridge.rabbit.hook.message.acked.$id", "emqx_bridge_rabbit.hooks", [
+  {datatype, string}
+]}.
+
+{translation, "emqx_bridge_rabbit.hooks", fun(Conf) ->
+  lists:map(fun({[_, _, _, S1, S2, _], Val}) ->
+                {list_to_atom(lists:concat([S1,".",S2])), Val}
+            end, cuttlefish_variable:filter_by_prefix("bridge.rabbit.hook", Conf))
+end}.

@@ -1,18 +1,16 @@
-[2021-03-25 16:57:36,029][logconsumer:15][ERROR][123145436020736] - f4 run
-[2021-03-25 16:57:46,846][logconsumer:15][ERROR][123145436020736] - f4 run
-[2021-03-25 17:28:18,939][logconsumer:15][ERROR][123145574371328] - 华住签到 run
-[2021-03-25 17:33:59,853][logconsumer:15][INFO][123145372864512] - f4 run
-[2021-03-25 17:34:20,653][logconsumer:15][INFO][123145466056704] - f4 run
-[2021-03-25 17:42:26,033][logconsumer:16][INFO][123145510768640] - f1 run
-[2021-03-25 17:42:28,037][logconsumer:16][INFO][123145510768640] - f1 failed Traceback (most recent call last):
+[2021-04-06 14:12:16,729][logconsumer:15][INFO][123145571332096] - 邮件配置错误！
+[2021-04-06 14:13:05,429][logconsumer:15][INFO][123145571332096] - f1 run
+[2021-04-06 14:13:07,441][logconsumer:15][INFO][123145571332096] - f1 failed Traceback (most recent call last):
   File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
     self._target(*self._args, **self._kwargs)
   File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 7, in run
     raise Exception('错误1！！')
 Exception: 错误1！！
 
-[2021-03-25 17:42:37,608][logconsumer:16][INFO][123145510768640] - 华住签到 run
-[2021-03-25 17:42:37,965][logconsumer:16][INFO][123145510768640] - 华住签到 failed Traceback (most recent call last):
+[2021-04-06 14:13:42,528][logconsumer:15][INFO][123145520873472] - 邮件配置错误！
+[2021-04-06 14:15:26,685][logconsumer:15][INFO][123145364217856] - 邮件配置错误！
+[2021-04-06 14:15:46,622][logconsumer:15][INFO][123145364217856] - 华住签到 run
+[2021-04-06 14:15:46,899][logconsumer:15][INFO][123145364217856] - 华住签到 failed Traceback (most recent call last):
   File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
     self._target(*self._args, **self._kwargs)
   File "/Users/wangfeihong/Desktop/TaskManager/task_code/华住签到.py", line 71, in run
@@ -21,21 +19,130 @@ Exception: 错误1！！
     raise Exception("抛出一个异常")
 Exception: 抛出一个异常
 
-[2021-03-26 16:45:58,917][logconsumer:16][INFO][123145435000832] - f1 run
-[2021-03-26 16:46:00,820][logconsumer:16][INFO][123145435000832] - f1 failed Traceback (most recent call last):
+[2021-04-06 14:19:12,981][logconsumer:15][INFO][123145347928064] - 邮件配置错误！
+[2021-04-06 14:19:23,888][logconsumer:15][INFO][123145347928064] - 华住签到 run
+[2021-04-06 14:19:24,138][logconsumer:15][INFO][123145347928064] - 华住签到 failed Traceback (most recent call last):
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/华住签到.py", line 71, in run
+    signIn()
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/华住签到.py", line 66, in signIn
+    raise Exception("抛出一个异常")
+Exception: 抛出一个异常
+
+[2021-04-06 14:21:20,994][logconsumer:15][INFO][123145428647936] - 邮件配置错误！
+[2021-04-06 14:21:36,357][logconsumer:15][INFO][123145428647936] - f1 run
+[2021-04-06 14:21:38,367][logconsumer:15][INFO][123145428647936] - f1 failed Traceback (most recent call last):
   File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
     self._target(*self._args, **self._kwargs)
   File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 7, in run
     raise Exception('错误1！！')
 Exception: 错误1！！
 
-[2021-03-26 16:46:08,711][logconsumer:16][INFO][123145435000832] - f4 run
-[2021-03-26 17:10:35,342][logconsumer:16][INFO][123145501884416] - 邮件配置错误！
-[2021-03-26 17:10:56,166][logconsumer:16][INFO][123145501884416] - f1 run
-[2021-03-26 17:10:58,284][logconsumer:16][INFO][123145501884416] - f1 failed Traceback (most recent call last):
+[2021-04-06 14:26:39,614][logconsumer:15][INFO][123145516539904] - 邮件配置错误！
+[2021-04-06 14:29:24,280][logconsumer:15][INFO][123145428250624] - 邮件配置错误！
+[2021-04-06 14:29:47,732][logconsumer:15][INFO][123145420386304] - 邮件发送失败！
+[2021-04-06 14:29:53,152][logconsumer:15][INFO][123145420386304] - 邮件配置错误！
+[2021-04-06 14:30:15,913][logconsumer:15][INFO][123145480511488] - 邮件配置错误！
+[2021-04-06 14:30:32,590][logconsumer:15][INFO][123145480511488] - f1 run
+[2021-04-06 14:30:34,602][logconsumer:15][INFO][123145480511488] - f1 failed Traceback (most recent call last):
   File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
     self._target(*self._args, **self._kwargs)
   File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 7, in run
     raise Exception('错误1！！')
 Exception: 错误1！！
 
+[2021-04-06 14:31:28,311][logconsumer:15][INFO][123145319239680] - 邮件配置错误！
+[2021-04-06 14:31:41,418][logconsumer:15][INFO][123145319239680] - f1 run
+[2021-04-06 14:31:43,428][logconsumer:15][INFO][123145319239680] - f1 failed Traceback (most recent call last):
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 7, in run
+    raise Exception('错误1！！')
+Exception: 错误1！！
+
+[2021-04-06 14:31:43,434][logconsumer:15][INFO][123145319239680] - 邮件发送失败！
+[2021-04-06 14:32:16,599][logconsumer:15][INFO][123145505456128] - 邮件配置错误！
+[2021-04-06 14:32:30,456][logconsumer:15][INFO][123145505456128] - f1 run
+[2021-04-06 14:32:32,472][logconsumer:15][INFO][123145505456128] - f1 failed Traceback (most recent call last):
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 7, in run
+    raise Exception('错误1！！')
+Exception: 错误1！！
+
+[2021-04-06 15:15:38,932][logconsumer:15][INFO][123145433837568] - 邮件配置错误！
+[2021-04-06 15:16:40,865][logconsumer:15][INFO][123145433837568] - f1 run
+[2021-04-06 15:16:42,875][logconsumer:15][INFO][123145433837568] - f1 failed Traceback (most recent call last):
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 79, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 7, in run
+    raise Exception('错误1！！')
+Exception: 错误1！！
+
+[2021-04-06 15:16:42,877][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:23,013][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:24,015][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:25,018][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:26,022][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:27,027][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:28,031][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:29,035][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:30,039][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:31,043][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:32,048][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:33,052][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:34,056][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:35,058][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:36,061][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:37,066][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:38,070][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:39,074][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:40,077][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:41,081][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:42,087][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:43,090][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:44,094][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:45,096][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:46,099][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:47,103][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:48,107][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:49,111][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:50,116][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:51,172][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:52,124][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:53,131][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:54,134][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:55,135][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:56,140][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:57,146][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:58,151][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:46:59,154][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:00,157][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:01,161][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:02,164][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:03,168][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:04,172][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:05,177][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:06,179][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:07,181][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:08,184][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:09,184][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:10,197][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:11,212][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:12,196][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:13,201][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:14,203][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:15,208][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:16,212][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:17,215][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:18,217][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:19,220][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:20,222][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:21,226][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:22,229][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:23,231][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:24,235][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:25,237][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:26,241][logconsumer:15][INFO][123145433837568] - 邮件发送失败！
+[2021-04-06 15:47:27,244][logconsumer:15][INFO][123145433837568] - 邮件发送失败！

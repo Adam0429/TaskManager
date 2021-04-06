@@ -1,0 +1,10 @@
+{application,jsonr,
+             [{description,"Erlang JSON Library"},
+              {vsn,"1.5.1"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {maintainers,["Takeru Ohta"]},
+              {licenses,["MIT"]},
+              {links,[{"GitHub","https://github.com/sile/jsone"}]},
+              {env,[]},
+              {modules,[jsonr,jsonr_decode,jsonr_encode]}]}.

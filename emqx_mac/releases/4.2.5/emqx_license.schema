@@ -1,0 +1,4 @@
+%% @doc License file of the node
+{mapping, "license.file", "emqx.license_file", [
+  {datatype, string}
+]}.
