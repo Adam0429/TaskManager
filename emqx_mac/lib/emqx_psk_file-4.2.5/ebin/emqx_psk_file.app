@@ -1,0 +1,13 @@
+{application,emqx_psk_file,
+             [{description,"EMQX PSK Plugin from File"},
+              {vsn,"4.2.5"},
+              {modules,[emqx_psk_file,emqx_psk_file_app,emqx_psk_file_sup]},
+              {registered,[emqx_psk_file_sup]},
+              {applications,[kernel,stdlib]},
+              {mod,{emqx_psk_file_app,[]}},
+              {env,[]},
+              {licenses,["Apache-2.0"]},
+              {maintainers,["EMQ X Team <contact@emqx.io>"]},
+              {links,[{"Homepage","https://emqx.io/"},
+                      {"Github","https://github.com/emqx/emqx-psk-file"}]},
+              {relup_deps,[emqx]}]}.

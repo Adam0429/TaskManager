@@ -1,0 +1,8 @@
+{"type": "record", "name":"subscribe", "namespace": "io.emqx.avro",
+ "fields": [
+     {"name": "clientid", "type": "bytes"},
+     {"name": "topic", "type": "bytes"},
+     {"name": "node", "type": "string"},
+     {"name": "ts", "type": "long"},
+ ]
+}

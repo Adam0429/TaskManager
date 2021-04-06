@@ -1,0 +1,13 @@
+{application,emqx_auth_jwt,
+             [{description,"EMQ X Authentication with JWT"},
+              {vsn,"4.2.5"},
+              {modules,[emqx_auth_jwt,emqx_auth_jwt_app,emqx_auth_jwt_svr]},
+              {registered,[emqx_auth_jwt_sup]},
+              {applications,[kernel,stdlib,jose]},
+              {mod,{emqx_auth_jwt_app,[]}},
+              {env,[]},
+              {licenses,["Apache-2.0"]},
+              {maintainers,["EMQ X Team <contact@emqx.io>"]},
+              {links,[{"Homepage","https://emqx.io/"},
+                      {"Github","https://github.com/emqx/emqx-auth-jwt"}]},
+              {relup_deps,[emqx,emqx_passwd]}]}.

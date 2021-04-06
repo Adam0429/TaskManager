@@ -1,0 +1,10 @@
+{application,emqx_backend_dynamo,
+             [{description,"EMQ X DynamoDB Backend"},
+              {vsn,"4.2.5"},
+              {modules,[emqx_backend_dynamo,emqx_backend_dynamo_app,
+                        emqx_backend_dynamo_cli,emqx_backend_dynamo_client,
+                        emqx_backend_dynamo_sup]},
+              {registered,[emqx_backend_dynamo_app]},
+              {applications,[kernel,stdlib,ecpool,erlcloud]},
+              {mod,{emqx_backend_dynamo_app,[]}},
+              {relup_deps,[emqx]}]}.

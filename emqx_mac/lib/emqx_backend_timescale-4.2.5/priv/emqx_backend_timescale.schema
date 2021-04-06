@@ -1,0 +1,89 @@
+%% emqx_backend_timescale config
+{mapping, "backend.timescale.$name.server", "emqx_backend_timescale.pools", [
+  {default, {"127.0.0.1", 5432}},
+  {datatype, [integer, ip, string]}
+]}.
+
+{mapping, "backend.timescale.$name.pool_size", "emqx_backend_timescale.pools", [
+  {default, 8},
+  {datatype, integer}
+]}.
+
+{mapping, "backend.timescale.$name.username", "emqx_backend_timescale.pools", [
+  {default, ""},
+  {datatype, string}
+]}.
+
+{mapping, "backend.timescale.$name.password", "emqx_backend_timescale.pools", [
+  {default, ""},
+  {datatype, string}
+]}.
+
+{mapping, "backend.timescale.$name.database", "emqx_backend_timescale.pools", [
+  {default, ""},
+  {datatype, string}
+]}.
+
+{mapping, "backend.timescale.$name.ssl", "emqx_backend_timescale.pools", [
+  {default, false},
+  {datatype, {enum, [true, false]}}
+]}.
+
+{mapping, "backend.timescale.$name.keyfile", "emqx_backend_timescale.pools", [
+  {datatype, string}
+]}.
+
+{mapping, "backend.timescale.$name.certfile", "emqx_backend_timescale.pools", [
+  {datatype, string}
+]}.
+
+{mapping, "backend.timescale.$name.cacertfile", "emqx_backend_timescale.pools", [
+  {datatype, string}
+]}.
+
+{translation, "emqx_backend_timescale.pools", fun(Conf) ->
+  Vars = cuttlefish_variable:fuzzy_matches(["backend", "timescale", "$name", "server"], Conf),
+  Key = fun(Name, Attr) -> string:join(["backend.timescale", Name, Attr], ".") end,
+  lists:map(fun({_, Name}) ->
+    {PgHost, PgPort} =
+      case cuttlefish:conf_get(Key(Name, "server"), Conf) of
+        {Ip, Port} -> {Ip, Port};
+        S          -> case string:tokens(S, ":") of
+                        [Domain]       -> {Domain, 5432};
+                        [Domain, Port] -> {Domain, list_to_integer(Port)}
+                      end
+        end,
+    Ssl = case cuttlefish:conf_get(Key(Name, "ssl"), Conf) of
+      true ->
+        Filter  = fun(Opts) -> [{K, V} || {K, V} <- Opts, V =/= undefined] end,
+        SslOpts = fun() ->
+                      Filter([{keyfile,    cuttlefish:conf_get(Key(Name, "keyfile"), Conf, undefined)},
+                              {certfile,   cuttlefish:conf_get(Key(Name, "certfile"), Conf, undefined)},
+                              {cacertfile, cuttlefish:conf_get(Key(Name, "cacertfile"), Conf, undefined)}])
+                  end,
+        [{ssl, true}, {ssl_opts, SslOpts()}];
+      false ->
+        []
+    end,
+
+    {list_to_atom(Name), [{host, PgHost}, {port, PgPort},
+                          {pool_size, cuttlefish:conf_get(Key(Name, "pool_size"), Conf)},
+                          {username, cuttlefish:conf_get(Key(Name, "username"), Conf)},
+                          {password, cuttlefish:conf_get(Key(Name, "password"), Conf)},
+                          {database, cuttlefish:conf_get(Key(Name, "database"), Conf)},
+                          {auto_reconnect, 2},
+                          {encoding, utf8}] ++ Ssl}
+  end, Vars)
+end}.
+
+{mapping, "backend.timescale.hook.message.publish.$name", "emqx_backend_timescale.hooks", [
+  {datatype, string}
+]}.
+
+{translation, "emqx_backend_timescale.hooks", fun(Conf) ->
+  Hooks = cuttlefish_variable:filter_by_prefix("backend.timescale.hook", Conf),
+  lists:map(
+    fun({[_, _, _,Name1,Name2, _], Val}) -> 
+    {lists:concat([Name1,".",Name2]), list_to_binary(Val)}
+  end, Hooks)
+end}.

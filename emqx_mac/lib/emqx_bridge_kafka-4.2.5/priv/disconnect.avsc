@@ -1,0 +1,8 @@
+{"type": "record", "name":"disconnect", "namespace": "io.emqx.avro",
+ "fields": [
+     {"name": "clientid", "type": "bytes"},
+     {"name": "node", "type": "string"},
+     {"name": "reason", "type": "bytes"},
+     {"name": "ts", "type": "long"},
+ ]
+}

@@ -1,0 +1,93 @@
+%%-*- mode: erlang -*-
+%% emqx_backend_cassa config mapping
+
+{mapping, "backend.ecql.$pool.nodes", "emqx_backend_cassa.pools", [
+  {default, "127.0.0.1:9042"},
+  {datatype, string}
+]}.
+
+{mapping, "backend.ecql.$pool.size", "emqx_backend_cassa.pools", [
+  {default, 8},
+  {datatype, integer}
+]}.
+
+{mapping, "backend.ecql.$pool.auto_reconnect", "emqx_backend_cassa.pools", [
+  {default, 1},
+  {datatype, integer},
+  hidden
+]}.
+
+{mapping, "backend.ecql.$pool.username", "emqx_backend_cassa.pools", [
+  {default, "cassandra"},
+  {datatype, string}
+]}.
+
+{mapping, "backend.ecql.$pool.password", "emqx_backend_cassa.pools", [
+  {default, "cassandra"},
+  {datatype, string}
+]}.
+
+{mapping, "backend.ecql.$pool.keyspace", "emqx_backend_cassa.pools", [
+  {default, "mqtt"},
+  {datatype, string}
+]}.
+
+{mapping, "backend.ecql.$pool.logger", "emqx_backend_cassa.pools", [
+  {default, error},
+  {datatype, atom}
+]}.
+
+{translation, "emqx_backend_cassa.pools", fun(Conf) ->
+  Vars = cuttlefish_variable:fuzzy_matches(["backend", "ecql", "$pool", "nodes"], Conf),
+  Key = fun(Pool, Attr) -> string:join(["backend.ecql", Pool, Attr], ".") end,
+  ParseNodes = fun(Line) -> [begin
+                              [Host, Port] = string:tokens(S, ":"),
+                              {Host, list_to_integer(Port)}
+                             end || S <- string:tokens(Line, ",")] end,
+  lists:map(fun({_, Pool}) ->
+    Nodes = ParseNodes(cuttlefish:conf_get(Key(Pool, "nodes"), Conf)),
+    {list_to_atom(Pool), [{nodes, Nodes},
+                          {pool_size, cuttlefish:conf_get(Key(Pool, "size"), Conf)},
+                          {auto_reconnect, cuttlefish:conf_get(Key(Pool, "auto_reconnect"), Conf, 1)},
+                          {username, cuttlefish:conf_get(Key(Pool, "username"), Conf)},
+                          {password, cuttlefish:conf_get(Key(Pool, "password"), Conf)},
+                          {keyspace, cuttlefish:conf_get(Key(Pool, "keyspace"), Conf)}]}
+  end, Vars)
+end}.
+
+
+{mapping, "backend.cassa.hook.client.connected.$name", "emqx_backend_cassa.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "backend.cassa.hook.client.disconnected.$name", "emqx_backend_cassa.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "backend.cassa.hook.session.subscribed.$name", "emqx_backend_cassa.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "backend.cassa.hook.session.unsubscribed.$name", "emqx_backend_cassa.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "backend.cassa.hook.message.publish.$name", "emqx_backend_cassa.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "backend.cassa.hook.message.acked.$name", "emqx_backend_cassa.hooks", [
+  {datatype, string}
+]}.
+
+{mapping, "backend.cassa.hook.message.delivered.$name", "emqx_backend_cassa.hooks", [
+  {datatype, string}
+]}.
+
+{translation, "emqx_backend_cassa.hooks", fun(Conf) ->
+  Hooks = cuttlefish_variable:filter_by_prefix("backend.cassa.hook", Conf),
+  lists:map(
+    fun({[_, _, _,Name1,Name2, _], Val}) -> 
+	  {lists:concat([Name1,".",Name2]), list_to_binary(Val)}
+	end, Hooks)
+end}.

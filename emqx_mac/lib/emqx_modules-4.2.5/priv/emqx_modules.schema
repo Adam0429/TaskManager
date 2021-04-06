@@ -1,0 +1,3 @@
+{mapping, "modules.loaded_file", "emqx_modules.loaded_file", [
+  {datatype, string}
+]}.

@@ -1,0 +1,12 @@
+{application,jamdb_oracle,
+             [{description,"Erlang driver for Oracle"},
+              {vsn,"0.4.2"},
+              {modules,[jamdb_oracle,jamdb_oracle_conn,jamdb_oracle_crypt,
+                        jamdb_oracle_tns_decoder,jamdb_oracle_tns_encoder]},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {files,[src,include,lib,"mix.exs"]},
+              {maintainers,["Mykhailo Vstavskyi","Sergiy Kostyushkin"]},
+              {licenses,["MIT"]},
+              {links,[{"Github",
+                       "https://github.com/erlangbureau/jamdb_oracle"}]}]}.
