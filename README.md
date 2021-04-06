@@ -60,7 +60,7 @@ docker images   # 查看本机镜像,检查taskmanager-docker是否创建成功
 
 docker run -it -p 8000:8000 taskmanager-docker  # 创建容器并进入
 
-emqx_ubuntu/bin/emqx start # 启动mqtt服务器
+emqx/bin/emqx start # 启动mqtt服务器
 
 python3 manager.py  # 启动服务
 

@@ -1,1 +1,0 @@
--define(APP, emqx_bridge_rocket).
