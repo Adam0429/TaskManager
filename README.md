@@ -21,15 +21,10 @@
 
 3. 邮件提示报错
 
-## 在mac上启动运行
-
+## 配置default_config.conf
 ```
-在此目录下
-
-配置default_config.conf
-
 [mqtt]
-server=broker.mqttdashboard.com  
+server=127.0.0.1  
 port=1883
 # mqtt的域名和端口号，如mqtt服务器不可用，运行后会报错或一直重试connected
 [consumer]
@@ -42,6 +37,10 @@ password=examplepassword
 server=smtp.qq.com
 receivers=['example2@qq.com']
 # 用于发邮件的配置
+
+## 在mac上启动运行
+
+进入在此目录下
 
 emqx_mac/bin/emqx start # 启动mqtt服务器
 
@@ -68,6 +67,31 @@ python3 manager.py  # 启动服务
 http://127.0.0.1:8000/
 
 ```
+
+## 按照模板编写task
+
+只需在py文件中包含run()方法即可。系统会默认调度run方法
+task例子:
+```
+import time
+def run():
+    """这里是f2函数"""
+    for i in range(100):
+        if i == 2:
+             raise Exception('错误1！！')
+        time.sleep(1)
+```
+task例子(带可选参数):
+```
+
+import time
+def run(a):
+    """这里是f2函数"""
+    for i in range(10):
+        time.sleep(1)
+        print(a)
+```
+
 ## TODO
 1. 将每个task的配置写进文件进行持久化（定时）
 2. ~~完善task的运行暂停部分，做到兼容定时任务~~
@@ -80,12 +104,14 @@ http://127.0.0.1:8000/
 9. 根据warning,error,info等级别，对日志模块进行改进
 10. ~~制作docker镜像~~
 11. ~~自己搭建mqtt服务器~~
+12. 设计前端页面
+13. 在网页端实现配置，查看日志等操作
 ## 更新日志
 
 | 版本 | 日期 | 描述|
 
 |1.0 | 2021-02-19 | 测试版本 |
-
+    
 ## 技术介绍
 
 基于多线程和消息队列进行任务的调度管理。

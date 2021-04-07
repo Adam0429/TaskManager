@@ -1,12 +1,11 @@
 from task import Task
 import os
 from glob import glob
-from flask import Flask, send_file, render_template,request,redirect
+from flask import Flask, render_template,request,redirect
 import datetime
-from emailconsumer import EmailConsumer
+from consumer.emailconsumer import EmailConsumer
 from configparser import ConfigParser
-from logconsumer import LogConsumer
-import logging
+from consumer.logconsumer import LogConsumer
 
 app = Flask(__name__)
 app.config['task_path'] = 'task_code'

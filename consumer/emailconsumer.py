@@ -1,7 +1,6 @@
-from paho.mqtt import client as mqtt_client
-from email_sender import Email_sender
+from templates.email_sender import Email_sender
 from configparser import ConfigParser
-from consumer import Consumer
+from consumer.consumer import Consumer
 
 class EmailConsumer(Consumer):
     def __init__(self,id):

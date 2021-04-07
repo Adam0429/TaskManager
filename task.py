@@ -5,11 +5,7 @@ import traceback
 import sys
 import inspect
 import datetime
-import re
-from schedule import Job
-import _thread
-import random
-from producer import Producer
+from producer.producer import Producer
 
 weekdays = (
 	'monday',

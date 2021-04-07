@@ -4,6 +4,7 @@ WORKDIR /TaskManager
 RUN apt-get update
 RUN apt-get install -y wget
 RUN apt-get install -y unzip
+RUN apt-get install -y vim
 RUN apt-get install -y python3
 RUN apt-get install -y python3-pip
 RUN pip3 install -r requirements.txt
