@@ -21,7 +21,12 @@
 
 3. 邮件提示报错
 
+## 架构图
+![](架构图.png)
+
+
 ## 配置default_config.conf
+
 ```
 [mqtt]
 server=127.0.0.1  
