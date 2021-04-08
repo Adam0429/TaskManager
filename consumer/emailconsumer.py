@@ -1,6 +1,9 @@
 from templates.email_sender import Email_sender
 from configparser import ConfigParser
-from consumer.consumer import Consumer
+if __name__ == '__main__':
+    from consumer import Consumer
+else:
+    from consumer.consumer import Consumer
 
 class EmailConsumer(Consumer):
     def __init__(self,id):

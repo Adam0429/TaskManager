@@ -1,7 +1,5 @@
 from paho.mqtt import client as mqtt_client
 from configparser import ConfigParser
-import paho.mqtt.client as mqtt
-import time
 
 class Producer():
     def __init__(self,id):
@@ -26,8 +24,6 @@ class Producer():
         #
         # publish.single(topic, text, hostname='127.0.0.1', port=61613,
         #                auth={'username': "admin", 'password': "password"})
-
-
         result = self.client.publish(topic,text)
         status = result[0]
         if status == 0:
@@ -35,10 +31,18 @@ class Producer():
         else:
             print(f"Failed to send `{text}` to topic `{topic}`")
 
+    def start(self):
+        self.client.loop_start()
+
+    def stop(self):
+        self.client.loop_stop()
+
 if __name__ == '__main__':
-    producer2 = Producer('python-mqtt-2')
+    producer = Producer('python-mqtt-2')
+    producer.start()
     for i in range(10011):
-        producer2.publish('TaskManager:send_email',str(i))
+        # producer.client.reconnect()
+        producer.publish('TaskManager:send_email',str(i))
         import time
-        time.sleep(1)
+        time.sleep(5)
 

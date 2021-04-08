@@ -111,6 +111,8 @@ def run(a):
 11. ~~自己搭建mqtt服务器~~
 12. 设计前端页面
 13. 在网页端实现配置，查看日志等操作
+14. 测试中，一天后邮件功能失效（try except重连），
+15. 测试中，60秒后所有producer全部断连。后来发现是因为keepalive机制：在 1.5*Keep Alive 的时间间隔内，如果 Broker 没有收到来自 Client 的任何数据包，那么 Broker 认为它和 Client 之间的连接已经断开。用loop_start(不堵塞当前线程)或者loop_forever(阻塞当前线程)可以自动断线重连。
 ## 更新日志
 
 | 版本 | 日期 | 描述|

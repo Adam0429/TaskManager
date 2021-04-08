@@ -21,7 +21,6 @@ class Consumer():
         self.client.connect(server, port)
         self.subscribe()
         self.config()
-        # self.config_email()
 
     def config(self):
         pass

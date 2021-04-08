@@ -1,6 +1,10 @@
-from consumer.consumer import Consumer
 import logging
 from logging.handlers import TimedRotatingFileHandler
+if __name__ == '__main__':
+    from consumer import Consumer
+else:
+    from consumer.consumer import Consumer
+
 
 class LogConsumer(Consumer):
     def __init__(self,id,logger):
