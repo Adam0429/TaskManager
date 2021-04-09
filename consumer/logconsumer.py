@@ -23,7 +23,7 @@ class LogConsumer(Consumer):
         formatter = logging.Formatter(
             "[%(asctime)s][%(module)s:%(lineno)d][%(levelname)s][%(thread)d] - %(message)s")
         handler = TimedRotatingFileHandler(
-            "../flask.log", when="D", interval=1, backupCount=15,
+            "flask.log", when="D", interval=1, backupCount=15,
             encoding="UTF-8", delay=False, utc=True)
         handler.setFormatter(formatter)
         self.logger.setLevel(logging.INFO)

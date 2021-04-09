@@ -1,4 +1,4 @@
-from templates.email_sender import Email_sender
+from utils.email_sender import Email_sender
 from configparser import ConfigParser
 if __name__ == '__main__':
     from consumer import Consumer

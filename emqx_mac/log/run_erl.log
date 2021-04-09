@@ -1,8 +1,8 @@
-run_erl [2562] Thu Apr  8 16:44:21 2021
+run_erl [799] Fri Apr  9 16:18:37 2021
 Args before exec of shell:
-run_erl [2562] Thu Apr  8 16:44:21 2021
+run_erl [799] Fri Apr  9 16:18:37 2021
 argv[0] = sh
-run_erl [2562] Thu Apr  8 16:44:21 2021
+run_erl [799] Fri Apr  9 16:18:37 2021
 argv[1] = -c
-run_erl [2562] Thu Apr  8 16:44:21 2021
+run_erl [799] Fri Apr  9 16:18:37 2021
 argv[2] = exec "/Users/wangfeihong/Desktop/TaskManager/emqx_mac/bin/emqx" "console"
