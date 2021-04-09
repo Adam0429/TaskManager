@@ -13,25 +13,17 @@ class Email_sender:
         self.server.login(self.account, self.password)
 
     def send(self,receivers,subject,text):
+        message = MIMEText(text, 'plain', 'utf-8')
+        message['From'] = Header(subject, 'utf-8')
+        message['To'] = Header("", 'utf-8')
+        message['Subject'] = Header(subject, 'utf-8')
         try:
-            message = MIMEText(text, 'plain', 'utf-8')
-            message['From'] = Header(subject, 'utf-8')
-            message['To'] = Header("", 'utf-8')
-            message['Subject'] = Header(subject, 'utf-8')
             self.server.sendmail(self.account, receivers, message.as_string())
         except SMTPServerDisconnected:
-            print('SMTPServerDisconnected')
+            self.server = smtplib.SMTP(self.smtp_server, 25)
             self.server.login(self.account, self.password)
+            self.server.sendmail(self.account, receivers, message.as_string())
 
-        #     self.server = smtplib.SMTP(self.smtp_server, 25)  # 断线重连
-        #     self.server.login(self.account, self.password)
-        #
-        #     message = MIMEText(text, 'plain', 'utf-8')
-        #     message['From'] = Header(subject, 'utf-8')
-        #     message['To'] = Header("", 'utf-8')
-        #     message['Subject'] = Header(subject, 'utf-8')
-        #     self.server.sendmail(self.account, receivers, message.as_string())
-        # server.quit()
 
 
 if __name__ == '__main__':
