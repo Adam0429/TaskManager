@@ -55,7 +55,7 @@ def signIn():
 	  'state': '0',
 	  'channel': 'APP',
 	  'source': 'APP',
-	  'sk': 'cfe53a2265834b81b3b3ce4ca79f5920069615093'
+	  'sk': '548a7914d8ba4ddf855ae0ef41ae8a54069615093'
 	}
 	response = requests.post('https://newactivity.huazhu.com/v1/pointStore/signIn', headers=headers, data=data,verify=False)
 	if response.json()['data']['success']:

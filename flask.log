@@ -1,37 +1,41 @@
-[2021-04-09 16:49:50,355][logconsumer:18][INFO][123145406287872] - 邮件配置错误！
-[2021-04-09 17:02:21,895][logconsumer:18][INFO][123145467158528] - f1 run
-[2021-04-09 17:02:23,908][logconsumer:18][INFO][123145467158528] - f1 failed Traceback (most recent call last):
-  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 75, in run
-    self._target(*self._args, **self._kwargs)
-  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 6, in run
-    raise Exception('错误1！！')
-Exception: 错误1！！
-
-[2021-04-09 17:02:41,876][logconsumer:18][INFO][123145467158528] - 邮件发送成功！
-[2021-04-09 17:03:21,081][logconsumer:18][INFO][123145413664768] - f1 run
-[2021-04-09 17:03:23,085][logconsumer:18][INFO][123145413664768] - f1 failed Traceback (most recent call last):
-  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 75, in run
-    self._target(*self._args, **self._kwargs)
-  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 6, in run
-    raise Exception('错误1！！')
-Exception: 错误1！！
-
-[2021-04-09 17:03:24,691][logconsumer:18][INFO][123145413664768] - 邮件发送成功！
-[2021-04-09 17:09:26,933][logconsumer:18][INFO][123145413664768] - f1 run
-[2021-04-09 17:09:28,935][logconsumer:18][INFO][123145413664768] - f1 failed Traceback (most recent call last):
-  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 75, in run
-    self._target(*self._args, **self._kwargs)
-  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 6, in run
-    raise Exception('错误1！！')
-Exception: 错误1！！
-
-[2021-04-09 17:09:29,756][logconsumer:18][INFO][123145413664768] - 邮件发送成功！
-[2021-04-09 17:14:49,302][logconsumer:18][INFO][123145413664768] - f1 run
-[2021-04-09 17:14:51,307][logconsumer:18][INFO][123145413664768] - f1 failed Traceback (most recent call last):
-  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 75, in run
-    self._target(*self._args, **self._kwargs)
-  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 6, in run
-    raise Exception('错误1！！')
-Exception: 错误1！！
-
-[2021-04-09 17:14:51,889][logconsumer:18][INFO][123145413664768] - 邮件发送成功！
+[2021-04-18 15:41:15,823][logconsumer:18][INFO][123145320050688] - 邮件配置错误！
+[2021-04-18 15:44:03,032][app:1892][ERROR][123145351581696] - Exception on /tasks [GET]
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/wangfeihong/Desktop/TaskManager/manager.py", line 87, in tasks
+TypeError: 'list' object is not callable
+[2021-04-18 15:44:26,332][logconsumer:18][INFO][123145470111744] - 邮件配置错误！
+[2021-04-18 15:44:32,434][app:1892][ERROR][123145501642752] - Exception on /tasks [GET]
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1953, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1968, in finalize_request
+    response = self.make_response(rv)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 2131, in make_response
+    " {rv.__class__.__name__}.".format(rv=rv)
+TypeError: The view function did not return a valid response. The return type must be a string, dict, tuple, Response instance, or WSGI callable, but it was a list.
+[2021-04-18 15:47:41,930][logconsumer:18][INFO][123145512759296] - 邮件配置错误！
+[2021-04-18 15:47:50,114][app:1892][ERROR][123145544290304] - Exception on /list_tasks [GET]
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1953, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1968, in finalize_request
+    response = self.make_response(rv)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 2131, in make_response
+    " {rv.__class__.__name__}.".format(rv=rv)
+TypeError: The view function did not return a valid response. The return type must be a string, dict, tuple, Response instance, or WSGI callable, but it was a list.

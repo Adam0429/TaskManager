@@ -2,14 +2,18 @@ from task import Task
 import os
 import os
 from glob import glob
-from flask import Flask, render_template,request,redirect
+from flask import Flask, render_template,request,redirect,Response,jsonify,make_response
 import datetime
 from consumer.emailconsumer import EmailConsumer
 from configparser import ConfigParser
 from consumer.logconsumer import LogConsumer
+from flask_cors import CORS 
+
 
 app = Flask(__name__)
 app.config['task_path'] = 'task_code'
+app.config['JSON_AS_ASCII'] = False
+CORS(app) # 解决跨域问题
 
 class Manager():
     def __init__(self):
@@ -82,9 +86,15 @@ def task_info(task_name):
             info = task.all_info
     return render_template("task_info.html",task_name=task_name,info=info)
 
-@app.route("/tasks")
-def tasks():
-    return manager.tasks()
+@app.route("/list_tasks")
+def list_tasks():
+
+    # return jsonify({'Access-Control-Allow-Origin': '*','code':200,'data':[task.info for task in manager.tasks]})
+
+    response = make_response({'code':200,'data':[task.info for task in manager.tasks]}, 200)
+    # response.headers["Access-Control-Allow-Origin"] = "*" # 这样也能解决跨域问题
+    return response
+
 
 @app.route("/addtask",methods=['POST'])
 def addtask():
