@@ -1,10 +1,19 @@
-[2021-04-18 15:41:15,823][logconsumer:18][INFO][123145320050688] - 邮件配置错误！
-[2021-04-18 15:44:03,032][app:1892][ERROR][123145351581696] - Exception on /tasks [GET]
+[2021-05-07 15:26:09,169][logconsumer:18][INFO][123145451163648] - f1 run
+[2021-05-07 15:26:11,177][logconsumer:18][INFO][123145451163648] - f1 failed Traceback (most recent call last):
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 76, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 6, in run
+    raise Exception('错误1！！')
+Exception: 错误1！！
+
+[2021-05-07 15:26:28,663][app:1892][ERROR][123145477976064] - Exception on /list_tasks [GET]
 Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
   File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
     rv = self.handle_user_exception(e)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
   File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
     reraise(exc_type, exc_value, tb)
   File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
@@ -13,29 +22,41 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/Users/wangfeihong/Desktop/TaskManager/manager.py", line 87, in tasks
-TypeError: 'list' object is not callable
-[2021-04-18 15:44:26,332][logconsumer:18][INFO][123145470111744] - 邮件配置错误！
-[2021-04-18 15:44:32,434][app:1892][ERROR][123145501642752] - Exception on /tasks [GET]
+  File "/Users/wangfeihong/Desktop/TaskManager/manager.py", line 92, in list_tasks
+    response = make_response({'tasks':[str_dict(task.info) for task in manager.tasks]}, 200)
+  File "/Users/wangfeihong/Desktop/TaskManager/manager.py", line 92, in <listcomp>
+    response = make_response({'tasks':[str_dict(task.info) for task in manager.tasks]}, 200)
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 161, in info
+    return {'status':self.status,'success':self.success,'doc':self.doc,'exception':self.exception,'start_time':self.start_time,'stop_time':self.stop_time}
+AttributeError: 'Task' object has no attribute 'start_time'
+[2021-05-07 15:26:30,130][app:1892][ERROR][123145477976064] - Exception on /list_tasks [GET]
 Traceback (most recent call last):
   File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1953, in full_dispatch_request
-    return self.finalize_request(rv)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1968, in finalize_request
-    response = self.make_response(rv)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 2131, in make_response
-    " {rv.__class__.__name__}.".format(rv=rv)
-TypeError: The view function did not return a valid response. The return type must be a string, dict, tuple, Response instance, or WSGI callable, but it was a list.
-[2021-04-18 15:47:41,930][logconsumer:18][INFO][123145512759296] - 邮件配置错误！
-[2021-04-18 15:47:50,114][app:1892][ERROR][123145544290304] - Exception on /list_tasks [GET]
-Traceback (most recent call last):
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1953, in full_dispatch_request
-    return self.finalize_request(rv)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1968, in finalize_request
-    response = self.make_response(rv)
-  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 2131, in make_response
-    " {rv.__class__.__name__}.".format(rv=rv)
-TypeError: The view function did not return a valid response. The return type must be a string, dict, tuple, Response instance, or WSGI callable, but it was a list.
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/wangfeihong/Desktop/TaskManager/manager.py", line 92, in list_tasks
+    response = make_response({'tasks':[str_dict(task.info) for task in manager.tasks]}, 200)
+  File "/Users/wangfeihong/Desktop/TaskManager/manager.py", line 92, in <listcomp>
+    response = make_response({'tasks':[str_dict(task.info) for task in manager.tasks]}, 200)
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 161, in info
+    return {'status':self.status,'success':self.success,'doc':self.doc,'exception':self.exception,'start_time':self.start_time,'stop_time':self.stop_time}
+AttributeError: 'Task' object has no attribute 'start_time'
+[2021-05-07 15:28:06,549][logconsumer:18][INFO][123145479258112] - f1 run
+[2021-05-07 15:28:08,553][logconsumer:18][INFO][123145479258112] - f1 failed Traceback (most recent call last):
+  File "/Users/wangfeihong/Desktop/TaskManager/task.py", line 78, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/wangfeihong/Desktop/TaskManager/task_code/f1.py", line 6, in run
+    raise Exception('错误1！！')
+Exception: 错误1！！
+

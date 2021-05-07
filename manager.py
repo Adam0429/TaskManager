@@ -8,7 +8,7 @@ from consumer.emailconsumer import EmailConsumer
 from configparser import ConfigParser
 from consumer.logconsumer import LogConsumer
 from flask_cors import CORS 
-
+from utils.simple_utils import str_dict
 
 app = Flask(__name__)
 app.config['task_path'] = 'task_code'
@@ -17,53 +17,37 @@ CORS(app) # 解决跨域问题
 
 class Manager():
     def __init__(self):
-        self.tasks = []
+        self.tasks = {}
 
     def add_task(self,task):
-        if task.name not in [task.name for task in self.tasks]:
-            self.tasks.append(task)
+        if task.name not in self.tasks:
+            self.tasks[task.name] = task
         else:
             raise Exception('不允许添加相同名字的任务！')
 
     def run_tasks(self,args=()):
-        for task in self.tasks:
-            # if task.status != 'running':
+        for task in self.tasks.values():
             task.start(args=args)
 
     def run_task_by_name(self,name,args=()):
-        for task in self.tasks:
-            if task.name == name:
-                # if task.status != 'running':
-                task.start(args=args)
-                break
+        self.tasks[name].start(args=args)
 
     def stop_tasks(self):
-        for task in self.tasks:
-            # if task.status != 'stopped':
+        for task in self.values():
             task.stop()
 
     def stop_task_by_name(self,name):
-        for task in self.tasks:
-            if task.name == name:
-                # if task.status != 'stopped':
-                task.stop()
-                break
+        self.tasks[name].stop()
 
     def restart_tasks(self):
-        for task in self.tasks:
+        for task in self.tasks.values():
             task.restart()
 
     def restart_task_by_name(self,name):
-        for task in self.tasks:
-            if task.name == name:
-                task.restart()
-                break
+        self.tasks[name].restart()
 
     def set_loop_by_name(self,name,unit,interval,start_time):
-        for task in self.tasks:
-            if task.name == name:
-                task.set_loop(unit, interval, start_time)
-                break
+        self.tasks[name].set_loop(unit, interval, start_time)
 
     def load_tasks(self):
         task_files = glob(os.path.join(app.config['task_path'],'*.py'))
@@ -81,20 +65,19 @@ def index():
 
 @app.route("/taskinfo/<task_name>")
 def task_info(task_name):
-    for task in manager.tasks:
-        if task.name == task_name:
-            info = task.all_info
-    return render_template("task_info.html",task_name=task_name,info=info)
+    return render_template("task_info.html",task_name=task_name,info=manager.tasks[task_name].all_info)
 
 @app.route("/list_tasks")
 def list_tasks():
-
     # return jsonify({'Access-Control-Allow-Origin': '*','code':200,'data':[task.info for task in manager.tasks]})
-
-    response = make_response({'code':200,'data':[task.info for task in manager.tasks]}, 200)
+    response = make_response({'tasks':[str_dict(task.info) for task in manager.tasks.values()]}, 200)
     # response.headers["Access-Control-Allow-Origin"] = "*" # 这样也能解决跨域问题
     return response
 
+@app.route("/task_allinfo/<task_name>")
+def task_allinfo(task_name):
+    response = make_response(str_dict(manager.tasks[task_name].all_info), 200)
+    return response
 
 @app.route("/addtask",methods=['POST'])
 def addtask():
@@ -124,7 +107,6 @@ def run_task_by_name():
     for key in request.form.keys():
         if key != 'task_name':
             args.append(request.form.get(key))
-    print(request.form.get('task_name'))
     manager.run_task_by_name(name=request.form.get('task_name'),args=tuple(args))
     return redirect("/")
 
@@ -136,6 +118,7 @@ def stop_tasks():
 @app.route("/stoptask_by_name/<name>")
 def stoptask_by_name(name):
     manager.stop_task_by_name(name)
+    return ''
     return redirect("/")
 
 @app.route("/restarttasks")
@@ -152,8 +135,6 @@ def restarttask_by_name(name):
 def setloop():
     manager.set_loop_by_name(request.form.get('task_name'),request.form.get('unit'),int(request.form.get('interval')),request.form.get('loop_start_time'))
     return redirect("/")
-
-
 
 
 if __name__ == '__main__':

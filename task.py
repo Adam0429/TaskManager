@@ -40,6 +40,8 @@ class Task(threading.Thread):
 		self.kwargs = kwargs
 		self.success = None
 		self.exception = None
+		self.start_time = ''
+		self.stop_time = ''
 		self.exc_traceback = ''
 		self.if_loop = False
 		self.if_notify = True  #可以改成level,按照warn,error,info处理
@@ -65,6 +67,7 @@ class Task(threading.Thread):
 						if self.if_notify:
 							self.producer.publish('TaskManager:send_email', self.name + ' failed ' + self.exc_traceback)
 					finally:
+						self.stop_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 						self._schedule_next_run()
 						time.sleep(1)
 
@@ -82,6 +85,8 @@ class Task(threading.Thread):
 				self.producer.publish('TaskManager:log', self.name + ' failed ' + self.exc_traceback)
 				if self.if_notify:
 					self.producer.publish('TaskManager:send_email', self.exc_traceback)
+			finally:
+				self.stop_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 	def start(self,args=()):
 		if self.isAlive():
@@ -91,7 +96,7 @@ class Task(threading.Thread):
 			# self.kwargs['args'] = args
 			# self.__init__(*self.args, **self.kwargs)
 			self.start_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-			print(self.name,'开始执行!')
+			print(self.name,'任务开始执行!')
 			self._started._flag = False
 			super().start()
 
@@ -155,7 +160,7 @@ class Task(threading.Thread):
 
 	@property
 	def info(self):
-		return {'status':self.status,'success':self.success,'doc':self.doc,'exception':self.exception,'exc_traceback':self.exc_traceback}
+		return {'status':self.status,'success':self.success,'name':self.name,'exception':self.exception,'start_time':self.start_time,'stop_time':self.stop_time}
 
 	@property
 	def all_info(self):
