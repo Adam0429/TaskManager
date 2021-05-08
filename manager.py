@@ -101,13 +101,10 @@ def run_tasks():
     manager.run_tasks()
     return redirect("/")
 
-@app.route("/runtask_by_name",methods=['POST'])
-def run_task_by_name():
+@app.route("/runtask_by_name/<name>")
+def run_task_by_name(name):
     args = []
-    for key in request.form.keys():
-        if key != 'task_name':
-            args.append(request.form.get(key))
-    manager.run_task_by_name(name=request.form.get('task_name'),args=tuple(args))
+    manager.run_task_by_name(name=name,args=tuple(args))
     return redirect("/")
 
 @app.route("/stoptasks")
@@ -116,9 +113,8 @@ def stop_tasks():
     return redirect("/")
 
 @app.route("/stoptask_by_name/<name>")
-def stoptask_by_name(name):
+def stop_task_by_name(name):
     manager.stop_task_by_name(name)
-    return ''
     return redirect("/")
 
 @app.route("/restarttasks")
@@ -127,7 +123,7 @@ def restart_tasks():
     return redirect("/")
 
 @app.route("/restarttask_by_name/<name>")
-def restarttask_by_name(name):
+def restart_task_by_name(name):
     manager.restart_task_by_name(name)
     return redirect("/")
 

@@ -38,16 +38,19 @@ class Task(threading.Thread):
 		# 	print(param)
 		self.args = args
 		self.kwargs = kwargs
-		self.success = None
-		self.exception = None
-		self.start_time = ''
-		self.stop_time = ''
-		self.exc_traceback = ''
+		self.init_info()
 		self.if_loop = False
 		self.if_notify = True  #可以改成level,按照warn,error,info处理
 		# self.log = ''
 		super().__init__(*self.args, **self.kwargs)
 		self.init_producer()
+
+	def init_info(self):
+		self.success = None
+		self.exception = None
+		self.start_time = ''
+		self.stop_time = ''
+		self.exc_traceback = ''
 
 	def run(self):
 		if self.if_loop:  # 定时任务
@@ -57,8 +60,9 @@ class Task(threading.Thread):
 					try:
 						self.producer.publish('TaskManager:log',self.name+' run')
 						self._target(*self._args, **self._kwargs)
-						self.success = True
-						self.exc_traceback = ''
+						# self.success = True
+						# self.exc_traceback = ''
+						# self.exception = None
 					except Exception as e:
 						self.exception = e
 						self.success = False
@@ -95,6 +99,7 @@ class Task(threading.Thread):
 			# 一个线程只能运行一次，下一次需要初始化(改写了)
 			# self.kwargs['args'] = args
 			# self.__init__(*self.args, **self.kwargs)
+			self.init_info()
 			self.start_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 			print(self.name,'任务开始执行!')
 			self._started._flag = False
@@ -112,8 +117,8 @@ class Task(threading.Thread):
 			print(self.name, '停止失败！cause:任务已经停止')
 			self.producer.publish('TaskManager:log', self.name + ' stop failed')
 		else:
-			print(self.name,'任务停止成功!')
 			self.raise_exc(SystemExit)
+			print(self.name,'任务停止成功!')
 			self.producer.publish('TaskManager:log', self.name + ' stop succeed')
 			time.sleep(1)
 			# """" 如果不用sleep函数，restart()会提示：任务已经在执行。因为是stop函数没有执行完成，上一个线程还没有被杀死"""

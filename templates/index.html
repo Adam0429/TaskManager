@@ -26,15 +26,7 @@
 
     {% for task in tasks.values(): %}
         {{ task.name }}:     {{ task.info }}<br>
-        <form action="runtask_by_name" method="POST">
-        <input type="hidden" name="task_name" value="{{ task.name }}"/>
-        {% for param in task.params %}
-            {{ param }}
-        <input type="text" name={{ param }}/>
-        {% endfor %}
-        <input type="submit" value="runtask">
-        </form>
-
+        <a href="runtask_by_name/{{ task.name }}">runtask</a>
         <form action="setloop_by_name" method="POST">
              <input type="hidden" name="task_name" value="{{ task.name }}"/>
             unit:<select name="unit">
