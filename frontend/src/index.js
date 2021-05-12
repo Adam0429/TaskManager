@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import TaskTable from './components/TaskTable'
+import NormalTaskPage from './NormalTask/page'
 import MyMenu from './components/Menu'
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import { Layout, Breadcrumb,Typography,Modal } from 'antd';
@@ -11,12 +10,7 @@ import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/
 import Logo from './images/logo.png'
 import Icon from '@ant-design/icons';
 import { createFromIconfontCN } from '@ant-design/icons';
-
 const { Header, Content, Footer, Sider } = Layout;
-
-const IconFont = createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
-});
 
 ReactDOM.render(
     <Layout>
@@ -25,8 +19,7 @@ ReactDOM.render(
             <MyMenu/>
         </Sider>
         <Content>
-            
-            <TaskTable/>
+            <NormalTaskPage/>
         </Content>
     </Layout>
     ,

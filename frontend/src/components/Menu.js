@@ -25,11 +25,10 @@ export default class tasktable extends Component {
   
     render() {
       return (
-        
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
           <SubMenu key="sub1" icon={<icon.CodeOutlined />} title="任务">
-            <Menu.Item key="1">普通任务</Menu.Item>
-            <Menu.Item key="2">定时任务</Menu.Item>
+            <Menu.Item key="1">普通运行</Menu.Item>
+            <Menu.Item key="2">定时运行</Menu.Item>
           </SubMenu>
           <Menu.Item key="3" icon={<icon.DesktopOutlined />}>
             监控
