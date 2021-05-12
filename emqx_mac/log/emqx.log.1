@@ -318,3 +318,27 @@
 2021-05-11 15:32:36.968 [critical] If you already have a paid license, please apply it now.
 2021-05-11 15:32:36.968 [critical] Or you could visit https://www.emqx.io/license to get a trial license.
 2021-05-11 15:32:36.968 [critical] ===============================================================================
+2021-05-11 18:28:12.857 [error]     supervisor: {local,gr_counter_sup}
+    errorContext: child_terminated
+    reason: killed
+    offender: [{pid,<0.2591.0>},
+               {id,gr_lager_default_tracer_counters},
+               {mfargs,{gr_counter,start_link,
+                                   [gr_lager_default_tracer_counters]}},
+               {restart_type,transient},
+               {shutdown,brutal_kill},
+               {child_type,worker}]
+2021-05-11 18:28:12.862 [error]     supervisor: {local,gr_param_sup}
+    errorContext: child_terminated
+    reason: killed
+    offender: [{pid,<0.2590.0>},
+               {id,gr_lager_default_tracer_params},
+               {mfargs,{gr_param,start_link,[gr_lager_default_tracer_params]}},
+               {restart_type,transient},
+               {shutdown,brutal_kill},
+               {child_type,worker}]
+2021-05-12 10:42:21.413 [critical] ===============================================================================
+2021-05-12 10:42:21.413 [critical] This is an evaluation license that is restricted to 10 concurrent connections.
+2021-05-12 10:42:21.414 [critical] If you already have a paid license, please apply it now.
+2021-05-12 10:42:21.414 [critical] Or you could visit https://www.emqx.io/license to get a trial license.
+2021-05-12 10:42:21.414 [critical] ===============================================================================

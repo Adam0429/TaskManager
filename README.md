@@ -1,6 +1,6 @@
 # TaskManager
 
-![](image/logo.png)
+![](logo.png)
 
 ![PyPI](https://img.shields.io/pypi/v/spideradmin.svg)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/SpiderAdmin)
