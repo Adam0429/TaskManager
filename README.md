@@ -1,6 +1,6 @@
 # TaskManager
 
-![](logo.png)
+![](images/logo.png)
 
 ![PyPI](https://img.shields.io/pypi/v/spideradmin.svg)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/SpiderAdmin)
@@ -22,10 +22,10 @@
 3. 邮件提示报错
 
 ## 网页截图
-![](demo.png)
+![](images/demo.png)
 
 ## 架构图
-![](架构图.png)
+![](images/架构图.png)
 
 
 ## 配置default_config.conf
