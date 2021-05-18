@@ -9,7 +9,8 @@ import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/
 export default class normal_task extends Component {
     render(){
         return(
-           <TaskTable/>
+            <h1>LoopTask</h1>
+        //    <TaskTable/>
         )
     }
 }

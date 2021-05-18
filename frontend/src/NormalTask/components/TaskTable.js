@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Table, Tag, Space, Button } from 'antd';
+import PubSub from 'pubsub-js' 
 
 export default class tasktable extends Component {
 	constructor(props){
