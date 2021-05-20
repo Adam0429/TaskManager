@@ -57,7 +57,6 @@ export default class Piechart extends Component {
             method: 'get',
             url: url,
         }).then(res => {
-            console.log(res.data['cpu_usage'])
             var myChart = echarts.init(document.getElementById("pie"),'light');
             var option;
             option = {
@@ -85,7 +84,8 @@ export default class Piechart extends Component {
     render() {
         return (
             <div>
-            <Button type="primary" onClick={this.handleClick}>刷新</Button>
+            <Button type="primary" onClick={() => this.handleClick()}>刷新</Button>
+            {/* 这里onClick={() => this.handleClick()} 和 onClick={this.handleClick}的区别在于，前者可以通过匿名函数，避免覆盖函数内部的this,因此函数内部仍然可以读到组件的this。handleClick函数没用到组件this,只是进行实验 */}
             <div id="pie" style={{ width: '100%', height: 500 }}></div></div>
         )
     }
