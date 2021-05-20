@@ -9,6 +9,7 @@ from configparser import ConfigParser
 from consumer.logconsumer import LogConsumer
 from flask_cors import CORS 
 from utils.simple_utils import str_dict
+import psutil
 
 app = Flask(__name__)
 app.config['task_path'] = 'task_code'
@@ -67,18 +68,6 @@ def index():
 def task_info(task_name):
     return render_template("task_info.html",task_name=task_name,info=manager.tasks[task_name].all_info)
 
-@app.route("/list_tasks")
-def list_tasks():
-    # return jsonify({'Access-Control-Allow-Origin': '*','code':200,'data':[task.info for task in manager.tasks]})
-    response = make_response({'tasks':[str_dict(task.info) for task in manager.tasks.values()]}, 200)
-    # response.headers["Access-Control-Allow-Origin"] = "*" # 这样也能解决跨域问题
-    return response
-
-@app.route("/task_allinfo/<task_name>")
-def task_allinfo(task_name):
-    response = make_response(str_dict(manager.tasks[task_name].all_info), 200)
-    return response
-
 @app.route("/addtask",methods=['POST'])
 def addtask():
     if request.method == 'POST':
@@ -132,6 +121,29 @@ def setloop():
     manager.set_loop_by_name(request.form.get('task_name'),request.form.get('unit'),int(request.form.get('interval')),request.form.get('loop_start_time'))
     return redirect("/")
 
+# react 前端接口
+
+@app.route("/list_tasks")
+def list_tasks():
+    # return jsonify({'Access-Control-Allow-Origin': '*','code':200,'data':[task.info for task in manager.tasks]})
+    response = make_response({'tasks':[str_dict(task.info) for task in manager.tasks.values()]}, 200)
+    # response.headers["Access-Control-Allow-Origin"] = "*" # 这样也能解决跨域问题
+    return response
+
+@app.route("/task_allinfo/<task_name>")
+def task_allinfo(task_name):
+    response = make_response(str_dict(manager.tasks[task_name].all_info), 200)
+    return response
+
+@app.route("/resource_usage")
+def resource_usage():
+    M = 1024 * 1024
+    G = M * 1024
+    mem = psutil.virtual_memory()
+    # return jsonify({'Access-Control-Allow-Origin': '*','code':200,'data':[task.info for task in manager.tasks]})
+    response = make_response({'cpu_usage':[{'name':'使用内存','value':mem.used/G},{'name':'未使用内存','value':mem.free/G},{'name':'空闲内存','value':mem.available/G}]}, 200)
+    # response.headers["Access-Control-Allow-Origin"] = "*" # 这样也能解决跨域问题
+    return response
 
 if __name__ == '__main__':
     config = ConfigParser()
@@ -148,5 +160,4 @@ if __name__ == '__main__':
     manager = Manager()
     manager.load_tasks()
     app.run(host='0.0.0.0',port=8000)
-
 

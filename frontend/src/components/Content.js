@@ -3,6 +3,7 @@ import { Layout } from 'antd';
 import PubSub from 'pubsub-js' 
 import NormalTaskPage from '../NormalTask/page'
 import LoopTaskPage from '../LoopTask/page'
+import Monitor from '../Monitor/page'
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -28,6 +29,9 @@ export default class content extends Component {
         }
         else if(menu==2){
             var page = <LoopTaskPage/>
+        }
+        else if(menu==3){
+            var page = <Monitor/>
         }
         return (
             <Content>

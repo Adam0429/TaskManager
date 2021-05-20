@@ -26,7 +26,7 @@ export default class tasktable extends Component {
     }
 	
     componentDidMount(){
-		this.refresh()
+		// this.refresh()
     }
 	refresh = () => {
 		setInterval(() => {
