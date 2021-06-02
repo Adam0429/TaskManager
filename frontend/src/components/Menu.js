@@ -16,7 +16,7 @@ export default class menu extends Component {
 	
 	changeTheme = value => {
 		this.setState({
-		theme: value ? 'light' : 'dark',
+			theme: value ? 'light' : 'dark',
 		});
 	};
 	
@@ -24,7 +24,7 @@ export default class menu extends Component {
 		console.log('click ', e.key);
 		PubSub.publish('menu', e.key);
 		this.setState({
-		current: e.key,
+			current: e.key,
 		});
 	};
 	

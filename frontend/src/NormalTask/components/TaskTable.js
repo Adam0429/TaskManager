@@ -73,6 +73,13 @@ export default class tasktable extends Component {
         }) 
 	}
 
+	task_info = (name) => {
+		PubSub.publish('menu', name);
+		this.setState({
+			current: name,
+		});
+	}
+
     render() {
 		const columns = [
 		  {
@@ -126,7 +133,6 @@ export default class tasktable extends Component {
 			  	</Button>
 		    ),
 		  },
-
 		  {
 		    title: '停止',
 			render: (text, record) => (
@@ -135,33 +141,19 @@ export default class tasktable extends Component {
 			  	</Button>
 		    ),
 		  },
+		  {
+		    title: '详细信息',
+			render: (text, record) => (
+				<Button type="primary" id={record.name} onClick={()=>this.task_info(record.name)}>
+					详细信息
+			  	</Button>
+		    ),
+		  },
 		];
-
-		// const data = [
-		//   {
-		//     key: '1',
-		//     name: 'John Brown',
-		//     age: 32,
-		//     address: 'New York No. 1 Lake Park',
-		//     tags: ['nice', 'developer'],
-		//   },
-		//   {
-		//     key: '2',
-		//     name: 'Jim Green',
-		//     age: 42,
-		//     address: 'London No. 1 Lake Park',
-		//     tags: ['loser'],
-		//   },
-		//   {
-		//     key: '3',
-		//     name: 'Joe Black',
-		//     age: 32,
-		//     address: 'Sidney No. 1 Lake Park',
-		//     tags: ['cool', 'teacher'],
-		//   },
-		// ];
         return (
-	        <Table columns={columns} dataSource={this.state.tasks} />
+			<div>
+	        	<Table columns={columns} dataSource={this.state.tasks} />
+			</div>
 		) 
 	}
 }

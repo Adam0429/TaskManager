@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Table, Tag, Space, Button } from 'antd';
-import PubSub from 'pubsub-js' 
 
 export default class tasktable extends Component {
 	constructor(props){
 	    super(props);
+		console.log(props)
+		this.task_name = props.task_name
 	    this.state={
-	    	tasks:[]
+	    	text:''
 	    }
 	  }
 	
     componentWillMount(){
-       let url = 'http://localhost:8000/list_tasks';
+       let url = 'http://localhost:8000/task_allinfo/'+this.task_name;
         axios({
             method: 'get',
             url: url,
         }).then(res => {
-			console.log(res.data.tasks)
+			console.log(res.data)
             this.setState({
-				tasks:res.data.tasks
+				text:JSON.stringify(res.data)
             	// tasks:JSON.stringify(res.data.tasks)
             })
         }) 
@@ -40,44 +41,6 @@ export default class tasktable extends Component {
 				})
 			}) 
 		}, 1000);		
-	}
-	run_task = (name) => {
-        axios({
-            method: 'get',
-            url: 'http://localhost:8000/runtask_by_name/'+name,
-        })
-        axios({
-            method: 'get',
-            url: 'http://localhost:8000/list_tasks',
-        }).then(res => {
-			console.log(res.data.tasks)
-            this.setState({
-				tasks:res.data.tasks
-            })
-        }) 
-	}
-
-	stop_task = (name) => {
-        axios({
-            method: 'get',
-            url: 'http://localhost:8000/stoptask_by_name/'+name,
-        })
-        axios({
-            method: 'get',
-            url: 'http://localhost:8000/list_tasks',
-        }).then(res => {
-			console.log(res.data.tasks)
-            this.setState({
-				tasks:res.data.tasks
-            })
-        }) 
-	}
-
-	task_info = (name) => {
-		PubSub.publish('menu', name);
-		this.setState({
-			current: name,
-		});
 	}
 
     render() {
@@ -133,6 +96,7 @@ export default class tasktable extends Component {
 			  	</Button>
 		    ),
 		  },
+
 		  {
 		    title: '停止',
 			render: (text, record) => (
@@ -141,19 +105,34 @@ export default class tasktable extends Component {
 			  	</Button>
 		    ),
 		  },
-		  {
-		    title: '详细信息',
-			render: (text, record) => (
-				<Button type="primary" id={record.name} onClick={()=>this.task_info(record.name)}>
-					详细信息
-			  	</Button>
-		    ),
-		  },
 		];
+
+		// const data = [
+		//   {
+		//     key: '1',
+		//     name: 'John Brown',
+		//     age: 32,
+		//     address: 'New York No. 1 Lake Park',
+		//     tags: ['nice', 'developer'],
+		//   },
+		//   {
+		//     key: '2',
+		//     name: 'Jim Green',
+		//     age: 42,
+		//     address: 'London No. 1 Lake Park',
+		//     tags: ['loser'],
+		//   },
+		//   {
+		//     key: '3',
+		//     name: 'Joe Black',
+		//     age: 32,
+		//     address: 'Sidney No. 1 Lake Park',
+		//     tags: ['cool', 'teacher'],
+		//   },
+		// ];
         return (
-			<div>
-	        	<Table columns={columns} dataSource={this.state.tasks} />
-			</div>
+			<h1>{this.state.text}</h1>
+	        // <Table columns={columns} dataSource={this.state.tasks} />
 		) 
 	}
 }

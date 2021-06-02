@@ -50,9 +50,7 @@ receivers=['example2@qq.com']
 
 进入在此目录下
 
-emqx_mac/bin/emqx start # 启动mqtt服务器
-
-python3 manager.py       # 启动服务
+sh ./deploy.sh
 
 访问：
 http://127.0.0.1:8000/
@@ -67,9 +65,7 @@ docker images   # 查看本机镜像,检查taskmanager-docker是否创建成功
 
 docker run -it -p 8000:8000 taskmanager-docker  # 创建容器并进入
 
-emqx/bin/emqx start # 启动mqtt服务器
-
-python3 manager.py  # 启动服务
+sh ./deploy.sh
 
 访问：
 http://127.0.0.1:8000/
@@ -121,6 +117,8 @@ def run(a):
 | 版本 | 日期 | 描述|
 
 |1.0 | 2021-02-19 | 测试版本 |
+|2.0 | 2021-06-02 | react版前端 |
+
     
 
 
