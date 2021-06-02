@@ -485,3 +485,23 @@
 2021-06-02 11:08:36.915 [critical] Or you could visit https://www.emqx.io/license to get a trial license.
 2021-06-02 11:08:36.916 [critical] ===============================================================================
 2021-06-02 15:37:53.323 [warning] [Alarm Handler] Alarm high_system_memory_usage is activated, System memory usage is higher than 70%
+2021-06-02 15:39:53.325 [warning] [Alarm Handler] Alarm high_system_memory_usage is deactivated
+2021-06-02 15:41:02.892 [error]     supervisor: {local,gr_counter_sup}
+    errorContext: child_terminated
+    reason: killed
+    offender: [{pid,<0.2598.0>},
+               {id,gr_lager_default_tracer_counters},
+               {mfargs,{gr_counter,start_link,
+                                   [gr_lager_default_tracer_counters]}},
+               {restart_type,transient},
+               {shutdown,brutal_kill},
+               {child_type,worker}]
+2021-06-02 15:41:02.893 [error]     supervisor: {local,gr_param_sup}
+    errorContext: child_terminated
+    reason: killed
+    offender: [{pid,<0.2597.0>},
+               {id,gr_lager_default_tracer_params},
+               {mfargs,{gr_param,start_link,[gr_lager_default_tracer_params]}},
+               {restart_type,transient},
+               {shutdown,brutal_kill},
+               {child_type,worker}]
