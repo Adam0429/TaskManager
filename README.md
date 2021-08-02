@@ -72,6 +72,26 @@ http://127.0.0.1:8000/
 
 ```
 
+## 运行部署react前端
+
+```
+cd frontend
+
+create-react-app my-app
+
+将 frontend/package.json 和 frontend/src 替换掉my-app的中对应文件
+
+cd my-app
+
+npm install # 安装依赖
+
+npm start
+
+访问：
+http://127.0.0.1:3000/
+
+```
+
 ## 按照模板编写task
 
 只需在py文件中包含run()方法即可。系统会默认调度run方法
