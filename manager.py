@@ -50,12 +50,12 @@ class Manager():
     def set_loop_by_name(self,name,unit,interval,start_time):
         self.tasks[name].set_loop(unit, interval, start_time)
 
-    def load_tasks(self):
+    def load_tasks(self,init_producer):
         task_files = glob(os.path.join(app.config['task_path'],'*.py'))
         print('loading tasks...')
         for file in task_files:
             if '__init__' not in file:
-                t = Task(name=file, file=file)
+                t = Task(name=file, file=file, init_producer=init_producer)
                 self.add_task(t)
         print('loading finish')
 
@@ -155,9 +155,12 @@ if __name__ == '__main__':
         emailconsumer = EmailConsumer('EmailConsumer')
         emailconsumer.start()
 
-
+    if config.get('consumer', 'email') != 'on' and  config.get('consumer', 'log') != 'on':
+        init_producer = False
+    else:
+        init_producer = True
 
     manager = Manager()
-    manager.load_tasks()
+    manager.load_tasks(init_producer=init_producer)
     app.run(host='0.0.0.0',port=8000)
 

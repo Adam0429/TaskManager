@@ -1,4 +1,6 @@
 import time
+from sklearn.linear_model import LinearRegression
+lin_reg = LinearRegression()
 def run():
 	"""这里是f2函数"""
 	for i in range(100):

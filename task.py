@@ -20,17 +20,26 @@ weekdays = (
 class Task(threading.Thread):
 	def __init__(self,*args, **kwargs):
 		# print(kwargs['name'])
+
 		kwargs['name'] = kwargs['name'].split('/')[kwargs['name'].count('/')].replace('.py','')
-		if 'file' in kwargs:
+		if kwargs.get('file') != None:
 			# print(f"from {(kwargs['file'].replace('.py', '')).replace('/', '.')} import *")
 			exec(f"from {(kwargs['file'].replace('.py', '')).replace('/','.')} import *")
-			if 'target' not in kwargs:
+
+			if kwargs.get('target') == None:
 				kwargs['target'] = eval(f"run")
 			else:
 				kwargs['target'] = eval(f"{kwargs['file'].replace('.py', '')}.{kwargs['target']}")
-			del kwargs['file']
-		if not callable(kwargs['target']):
+
+		init_producer = kwargs.get('init_producer')
+
+		for my_args in ['file','init_producer']:    # 删除原本不属于Thread中的参数
+			if my_args in kwargs.keys():
+				del kwargs[my_args]
+
+		if not callable(kwargs.get('target')):
 			raise TypeError("the function must be callable")
+
 		self.doc = kwargs['target'].__doc__
 		self.params = inspect.getargspec(kwargs['target']).args
 		# for param in self.params:
@@ -43,7 +52,9 @@ class Task(threading.Thread):
 		self.if_notify = True  #可以改成level,按照warn,error,info处理
 		# self.log = ''
 		super().__init__(*self.args, **self.kwargs)
-		self.init_producer()
+		# if kwargs.get('init_produce')
+		if init_producer != False:
+			self.init_producer()
 
 	def init_info(self):
 		self.success = None
@@ -58,7 +69,7 @@ class Task(threading.Thread):
 				self._is_stopped = False
 				if datetime.datetime.now() > self.next_run:
 					try:
-						self.producer.publish('TaskManager:log',self.name+' run')
+						self.publish('TaskManager:log',self.name+' run')
 						self._target(*self._args, **self._kwargs)
 						# self.success = True
 						# self.exc_traceback = ''
@@ -67,9 +78,9 @@ class Task(threading.Thread):
 						self.exception = e
 						self.success = False
 						self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
-						self.producer.publish('TaskManager:log', self.name + ' failed ' + self.exc_traceback)
+						self.publish('TaskManager:log', self.name + ' failed ' + self.exc_traceback)
 						if self.if_notify:
-							self.producer.publish('TaskManager:send_email', self.name + ' failed ' + self.exc_traceback)
+							self.publish('TaskManager:send_email', self.name + ' failed ' + self.exc_traceback)
 					finally:
 						self.stop_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 						self._schedule_next_run()
@@ -78,7 +89,7 @@ class Task(threading.Thread):
 		else:
 			self._is_stopped = False
 			try:
-				self.producer.publish('TaskManager:log', self.name + ' run')
+				self.publish('TaskManager:log', self.name + ' run')
 				self._target(*self._args, **self._kwargs)
 				self.success = True
 
@@ -86,9 +97,9 @@ class Task(threading.Thread):
 				self.exception = e
 				self.success = False
 				self.exc_traceback = ''.join(traceback.format_exception(*sys.exc_info()))
-				self.producer.publish('TaskManager:log', self.name + ' failed ' + self.exc_traceback)
+				self.publish('TaskManager:log', self.name + ' failed ' + self.exc_traceback)
 				if self.if_notify:
-					self.producer.publish('TaskManager:send_email', self.exc_traceback)
+					self.publish('TaskManager:send_email', self.exc_traceback)
 			finally:
 				self.stop_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -115,11 +126,11 @@ class Task(threading.Thread):
 		cause the thread to exit silently (unless caught)"""
 		if self.isAlive() == False:
 			print(self.name, '停止失败！cause:任务已经停止')
-			self.producer.publish('TaskManager:log', self.name + ' stop failed')
+			self.publish('TaskManager:log', self.name + ' stop failed')
 		else:
 			self.raise_exc(SystemExit)
 			print(self.name,'任务停止成功!')
-			self.producer.publish('TaskManager:log', self.name + ' stop succeed')
+			self.publish('TaskManrodager:log', self.name + ' stop succeed')
 			time.sleep(1)
 			# """" 如果不用sleep函数，restart()会提示：任务已经在执行。因为是stop函数没有执行完成，上一个线程还没有被杀死"""
 			# self._is_stopped = True
@@ -245,6 +256,11 @@ class Task(threading.Thread):
 		# generate client ID with pub prefix randomly
 		self.producer = Producer('producer-'+self.name)
 		self.producer.start()
+
+	def publish(self,*args):
+		# 考虑到有些时候没有init_producer,避免报错，所以封装一下
+		if hasattr(self,'producer'):
+			self.producer.publish(*args)
 
 # import time
 # def fun1(a):
